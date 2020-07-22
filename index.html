@@ -3,7 +3,9 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>News Reader</title>
+  <link rel="icon" href="iconsplash_256.png" type="image/icon type">
+
+  <title>Premiere League</title>
   <meta name="description" content="My first PWA" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="css/materialize.min.css" />
@@ -16,7 +18,7 @@
   <!-- Navigasi -->
   <nav class="blue-feel" role="navigation">
     <div class="nav-wrapper container">
-      <a href="#" class="brand-logo" id="logo-container">News Reader</a>
+      <a href="#" class="brand-logo" id="logo-container">Premiere League</a>
       <a href="#" class="sidenav-trigger" data-target="nav-mobile">&#9776;</a>
 
       <ul class="topnav right hide-on-med-and-down"></ul>
@@ -52,9 +54,7 @@
     }
 
     // REQUEST API UNTUK PERTAMA KALI
-    document.addEventListener("DOMContentLoaded", function () {
-      getTeams();
-    });
+    getStandings();
   </script>
   <footer class="blue-feel  white-text" style="padding: 2em; text-align:center">
     Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
