@@ -33,7 +33,6 @@ function getStandings() {
           data.standings.table.forEach(function (club) {
             standingHTML += `
               <tr>
-                <a href="./article.html?id=${club.team.id}">
                 <td>
                   <img src="${club.team.crestUrl}" />
                   <span style="font-weight:bold"> ${club.team.name} </span>
@@ -46,7 +45,6 @@ function getStandings() {
                 <td>${club.goalsAgainst}</td>
                 <td>${club.goalDifference}</td>
                 <td>${club.Points}</td>
-                </a>
               </tr>
             `;
           });
@@ -72,7 +70,7 @@ function getStandings() {
       data.standings[0].table.forEach(function (club) {
         standingHTML += `
         <tr>
-          <a href="./article.html?id=${club.team.id}">
+          <a href="./team.html?id=${club.team.id}">
           <td style="padding:.5rem">
             <img src="${club.team.crestUrl}" width=32 height=32 />
             <span style="font-weight:bold;padding-bottom:.25rem"> ${club.team.name} </span>
@@ -95,7 +93,79 @@ function getStandings() {
     .catch(error);
 }
 
-function getclubById() {
+function getTeams() {
+  if ("caches" in window) {
+    caches.match(base_url + "competitions/2021/standings").then(function (response) {
+      if (response) {
+        response.json().then(function (data) {
+          var teamHTML = "";
+          data.standings.table.forEach(function (club) {
+            teamHTML += `
+              <div class="card medium">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img src="${club.team.crestUrl}" alt="${club.team.name} logo" class="activator"/>
+                </div>
+                <div class="card-content">
+                  <a href="./team.html?id=${club.team.id}">
+                  <span class="card-title activator">${club.team.name}<i class="material-icons right">more_vert</i></span>
+                  <p> lorem ipsum </p>
+                  </a>
+                </div>
+                <div class="card-reveal">
+                  <span class="card-title activator">Card Title<i class="material-icons right">close</i></span>
+                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                </div>
+              </div>
+            `;
+          });
+          // Sisipkan komponen card ke dalam elemen dengan id #content
+          document.getElementById("team-list").innerHTML = teamHTML;
+        });
+      }
+    });
+  }
+
+  fetch(base_url + "competitions/2021/standings", {
+    headers: {
+      'X-Auth-Token': '47e21f74b233433f9424263bcf49c5b7'
+    }
+  })
+    .then(status)
+    .then(json)
+    .then(function (data) {
+      // Objek/array JavaScript dari response.json() masuk lewat data.
+
+      // Menyusun komponen card artikel secara dinamis
+      var standingHTML = "";
+      console.log(data)
+
+      data.standings[0].table.forEach(function (club) {
+        standingHTML += `
+        <div class="col s12 m6 l4">
+          <div class="card medium">
+            <div class = "row">
+              <div class="col s5 m5 l5">
+                <img src="${club.team.crestUrl}" alt="${club.team.name} logo" width=128 height=128 style="padding-left:5px"/>
+              </div>
+              <div class="col s7 m7 l7" style="margin-top:3em">
+                <a href="./team.html?id=${club.team.id}">
+                  <span class="card-title" >${club.team.name}</span>
+                </a>
+              </div>
+            </div>
+            <p class="card-content"> lorem ipsum </p>
+            
+          </div>
+        </div>
+            `;
+      });
+      // Sisipkan komponen card ke dalam elemen dengan id #content
+      document.getElementById("team-list").innerHTML = standingHTML;
+    })
+    .catch(error);
+}
+
+function getTeamById() {
   return new Promise(function (resolve, reject) {
     // Ambil nilai query parameter (?id=)
     var urlParams = new URLSearchParams(window.location.search);
@@ -151,7 +221,7 @@ function getclubById() {
   });
 }
 
-function getSavedclubs() {
+function getSavedTeams() {
   getAll().then(function (articles) {
     console.log(articles);
     // Menyusun komponen card artikel secara dinamis
@@ -160,7 +230,7 @@ function getSavedclubs() {
       var description = article.post_content.substring(0, 100);
       articlesHTML += `
                   <div class="card">
-                    <a href="./article.html?id=${article.ID}&saved=true">
+                    <a href="./team.html?id=${article.ID}&saved=true">
                       <div class="card-image waves-effect waves-block waves-light">
                         <img src="${article.cover}" />
                       </div>
@@ -177,7 +247,7 @@ function getSavedclubs() {
   });
 }
 
-function getSavedclubById() {
+function getSavedTeamById() {
   var urlParams = new URLSearchParams(window.location.search);
   var idParam = urlParams.get("id");
 
