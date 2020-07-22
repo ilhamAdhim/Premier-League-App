@@ -24,7 +24,7 @@ function error(error) {
 }
 
 // Blok kode untuk melakukan request data json
-function getArticles() {
+function getTeams() {
   if ("caches" in window) {
     caches.match(base_url + "articles").then(function (response) {
       if (response) {
@@ -66,7 +66,7 @@ function getArticles() {
                 <a href="./article.html?id=${article.id}">
                   <div class="card-image waves-effect waves-block waves-light">
                     <img src="${article.thumbnail}" />
-                  </div>
+                  </div>z
                 </a>
                 <div class="card-content">
                   <span class="card-title truncate">${article.title}</span>
@@ -81,7 +81,7 @@ function getArticles() {
     .catch(error);
 }
 
-function getArticleById() {
+function getTeamById() {
   return new Promise(function (resolve, reject) {
     // Ambil nilai query parameter (?id=)
     var urlParams = new URLSearchParams(window.location.search);
@@ -91,7 +91,7 @@ function getArticleById() {
       caches.match(base_url + "article/" + idParam).then(function (response) {
         if (response) {
           response.json().then(function (data) {
-            var articleHTML = `
+            var teamHTML = `
             <div class="card">
               <div class="card-image waves-effect waves-block waves-light">
                 <img src="${data.result.cover}" />
@@ -103,7 +103,7 @@ function getArticleById() {
             </div>
           `;
             // Sisipkan komponen card ke dalam elemen dengan id #content
-            document.getElementById("body-content").innerHTML = articleHTML;
+            document.getElementById("body-content").innerHTML = teamHTML;
             // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
             resolve(data);
           });
@@ -118,7 +118,7 @@ function getArticleById() {
         // Objek JavaScript dari response.json() masuk lewat variabel data.
         console.log(data);
         // Menyusun komponen card artikel secara dinamis
-        var articleHTML = `
+        var teamHTML = `
           <div class="card">
             <div class="card-image waves-effect waves-block waves-light">
               <img src="${data.result.cover}" />
@@ -130,14 +130,14 @@ function getArticleById() {
           </div>
         `;
         // Sisipkan komponen card ke dalam elemen dengan id #content
-        document.getElementById("body-content").innerHTML = articleHTML;
+        document.getElementById("body-content").innerHTML = teamHTML;
         // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
         resolve(data);
       });
   });
 }
 
-function getSavedArticles() {
+function getSavedTeams() {
   getAll().then(function (articles) {
     console.log(articles);
     // Menyusun komponen card artikel secara dinamis
@@ -163,13 +163,13 @@ function getSavedArticles() {
   });
 }
 
-function getSavedArticleById() {
+function getSavedTeamById() {
   var urlParams = new URLSearchParams(window.location.search);
   var idParam = urlParams.get("id");
 
   getById(idParam).then(function (article) {
-    articleHTML = '';
-    var articleHTML = `
+    teamHTML = '';
+    var teamHTML = `
     <div class="card">
       <div class="card-image waves-effect waves-block waves-light">
         <img src="${article.cover}" />
@@ -181,7 +181,7 @@ function getSavedArticleById() {
     </div>
   `;
     // Sisipkan komponen card ke dalam elemen dengan id #content
-    document.getElementById("body-content").innerHTML = articleHTML;
+    document.getElementById("body-content").innerHTML = teamHTML;
   });
 }
 
