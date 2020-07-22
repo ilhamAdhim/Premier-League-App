@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4) {
                 var content = document.querySelector("#body-content");
-                if (page === "home") {
-                    getTeams();
+                if (page === "contact") {
+                    getStandings();
                 } else if (page === "saved") {
                     getSavedTeams();
                 }

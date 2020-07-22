@@ -1,4 +1,4 @@
-var base_url = "https://readerapi.codepolitan.com/";
+var base_url = "https://api.football-data.org/v2/";
 
 // Blok kode yang akan di panggil jika fetch berhasil
 function status(response) {
@@ -24,64 +24,78 @@ function error(error) {
 }
 
 // Blok kode untuk melakukan request data json
-function getTeams() {
+function getStandings() {
   if ("caches" in window) {
-    caches.match(base_url + "articles").then(function (response) {
+    caches.match(base_url + "competitions/2021/standings").then(function (response) {
       if (response) {
         response.json().then(function (data) {
-          var articlesHTML = "";
-          data.result.forEach(function (article) {
-            articlesHTML += `
-                  <div class="card">
-                    <a href="./article.html?id=${article.id}">
-                      <div class="card-image waves-effect waves-block waves-light">
-                        <img src="${article.thumbnail}" />
-                      </div>
-                    </a>
-                    <div class="card-content">
-                      <span class="card-title truncate">${article.title}</span>
-                      <p>${article.description}</p>
-                    </div>
-                  </div>
-                `;
+          var standingHTML = "";
+          data.standings.table.forEach(function (club) {
+            standingHTML += `
+              <tr>
+                <a href="./article.html?id=${club.team.id}">
+                <td>
+                  <img src="${club.team.crestUrl}" />
+                  <span style="font-weight:bold"> ${club.team.name} </span>
+                </td>
+                <td>${club.playedGames}</td>
+                <td>${club.won}</td>
+                <td>${club.draw}</td>
+                <td>${club.lost}</td>
+                <td>${club.goalsFor}</td>
+                <td>${club.goalsAgainst}</td>
+                <td>${club.goalDifference}</td>
+                <td>${club.Points}</td>
+                </a>
+              </tr>
+            `;
           });
           // Sisipkan komponen card ke dalam elemen dengan id #content
-          document.getElementById("articles").innerHTML = articlesHTML;
+          document.getElementById("standings").innerHTML = standingHTML;
         });
       }
     });
   }
 
-  fetch(base_url + "articles")
+  fetch(base_url + "competitions/2021/standings", {
+    headers: {
+      'X-Auth-Token': '47e21f74b233433f9424263bcf49c5b7'
+    }
+  })
     .then(status)
     .then(json)
     .then(function (data) {
       // Objek/array JavaScript dari response.json() masuk lewat data.
 
       // Menyusun komponen card artikel secara dinamis
-      var articlesHTML = "";
-      data.result.forEach(function (article) {
-        articlesHTML += `
-              <div class="card">
-                <a href="./article.html?id=${article.id}">
-                  <div class="card-image waves-effect waves-block waves-light">
-                    <img src="${article.thumbnail}" />
-                  </div>z
-                </a>
-                <div class="card-content">
-                  <span class="card-title truncate">${article.title}</span>
-                  <p>${article.description}</p>
-                </div>
-              </div>
+      var standingHTML = "";
+      data.standings[0].table.forEach(function (club) {
+        standingHTML += `
+        <tr>
+          <a href="./article.html?id=${club.team.id}">
+          <td style="padding:.5rem">
+            <img src="${club.team.crestUrl}" width=32 height=32 />
+            <span style="font-weight:bold;padding-bottom:.25rem"> ${club.team.name} </span>
+          </td>
+          <td>${club.playedGames}</td>
+          <td>${club.won}</td>
+          <td>${club.draw}</td>
+          <td>${club.lost}</td>
+          <td>${club.goalsFor}</td>
+          <td>${club.goalsAgainst}</td>
+          <td>${club.goalDifference}</td>
+          <td>${club.points}</td>
+          </a>
+        </tr>
             `;
       });
       // Sisipkan komponen card ke dalam elemen dengan id #content
-      document.getElementById("articles").innerHTML = articlesHTML;
+      document.getElementById("standings").innerHTML = standingHTML;
     })
     .catch(error);
 }
 
-function getTeamById() {
+function getclubById() {
   return new Promise(function (resolve, reject) {
     // Ambil nilai query parameter (?id=)
     var urlParams = new URLSearchParams(window.location.search);
@@ -91,7 +105,7 @@ function getTeamById() {
       caches.match(base_url + "article/" + idParam).then(function (response) {
         if (response) {
           response.json().then(function (data) {
-            var teamHTML = `
+            var clubHTML = `
             <div class="card">
               <div class="card-image waves-effect waves-block waves-light">
                 <img src="${data.result.cover}" />
@@ -103,7 +117,7 @@ function getTeamById() {
             </div>
           `;
             // Sisipkan komponen card ke dalam elemen dengan id #content
-            document.getElementById("body-content").innerHTML = teamHTML;
+            document.getElementById("body-content").innerHTML = clubHTML;
             // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
             resolve(data);
           });
@@ -118,7 +132,7 @@ function getTeamById() {
         // Objek JavaScript dari response.json() masuk lewat variabel data.
         console.log(data);
         // Menyusun komponen card artikel secara dinamis
-        var teamHTML = `
+        var clubHTML = `
           <div class="card">
             <div class="card-image waves-effect waves-block waves-light">
               <img src="${data.result.cover}" />
@@ -130,14 +144,14 @@ function getTeamById() {
           </div>
         `;
         // Sisipkan komponen card ke dalam elemen dengan id #content
-        document.getElementById("body-content").innerHTML = teamHTML;
+        document.getElementById("body-content").innerHTML = clubHTML;
         // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
         resolve(data);
       });
   });
 }
 
-function getSavedTeams() {
+function getSavedclubs() {
   getAll().then(function (articles) {
     console.log(articles);
     // Menyusun komponen card artikel secara dinamis
@@ -163,13 +177,13 @@ function getSavedTeams() {
   });
 }
 
-function getSavedTeamById() {
+function getSavedclubById() {
   var urlParams = new URLSearchParams(window.location.search);
   var idParam = urlParams.get("id");
 
   getById(idParam).then(function (article) {
-    teamHTML = '';
-    var teamHTML = `
+    clubHTML = '';
+    var clubHTML = `
     <div class="card">
       <div class="card-image waves-effect waves-block waves-light">
         <img src="${article.cover}" />
@@ -181,7 +195,7 @@ function getSavedTeamById() {
     </div>
   `;
     // Sisipkan komponen card ke dalam elemen dengan id #content
-    document.getElementById("body-content").innerHTML = teamHTML;
+    document.getElementById("body-content").innerHTML = clubHTML;
   });
 }
 
