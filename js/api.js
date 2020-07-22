@@ -30,22 +30,22 @@ function getStandings() {
       if (response) {
         response.json().then(function (data) {
           var standingHTML = "";
-          data.standings.table.forEach(function (club) {
+          data.standings[0].table.forEach(function (club) {
             standingHTML += `
-              <tr>
-                <td>
-                  <img src="${club.team.crestUrl}" />
-                  <span style="font-weight:bold"> ${club.team.name} </span>
-                </td>
-                <td>${club.playedGames}</td>
-                <td>${club.won}</td>
-                <td>${club.draw}</td>
-                <td>${club.lost}</td>
-                <td>${club.goalsFor}</td>
-                <td>${club.goalsAgainst}</td>
-                <td>${club.goalDifference}</td>
-                <td>${club.Points}</td>
-              </tr>
+            <tr>
+              <td style="padding:.5rem">
+                <img src="${club.team.crestUrl}" width=32 height=32 />
+                <span style="font-weight:bold;padding-bottom:.25rem"> ${club.team.name} </span>
+              </td>
+              <td>${club.playedGames}</td>
+              <td>${club.won}</td>
+              <td>${club.draw}</td>
+              <td>${club.lost}</td>
+              <td>${club.goalsFor}</td>
+              <td>${club.goalsAgainst}</td>
+              <td>${club.goalDifference}</td>
+              <td>${club.points}</td>
+            </tr>
             `;
           });
           // Sisipkan komponen card ke dalam elemen dengan id #content
@@ -53,44 +53,43 @@ function getStandings() {
         });
       }
     });
-  }
+  } else {
 
-  fetch(base_url + "competitions/2021/standings", {
-    headers: {
-      'X-Auth-Token': '47e21f74b233433f9424263bcf49c5b7'
-    }
-  })
-    .then(status)
-    .then(json)
-    .then(function (data) {
-      // Objek/array JavaScript dari response.json() masuk lewat data.
-
-      // Menyusun komponen card artikel secara dinamis
-      var standingHTML = "";
-      data.standings[0].table.forEach(function (club) {
-        standingHTML += `
-        <tr>
-          <a href="./team.html?id=${club.team.id}">
-          <td style="padding:.5rem">
-            <img src="${club.team.crestUrl}" width=32 height=32 />
-            <span style="font-weight:bold;padding-bottom:.25rem"> ${club.team.name} </span>
-          </td>
-          <td>${club.playedGames}</td>
-          <td>${club.won}</td>
-          <td>${club.draw}</td>
-          <td>${club.lost}</td>
-          <td>${club.goalsFor}</td>
-          <td>${club.goalsAgainst}</td>
-          <td>${club.goalDifference}</td>
-          <td>${club.points}</td>
-          </a>
-        </tr>
-            `;
-      });
-      // Sisipkan komponen card ke dalam elemen dengan id #content
-      document.getElementById("standings").innerHTML = standingHTML;
+    fetch(base_url + "competitions/2021/standings", {
+      headers: {
+        'X-Auth-Token': '47e21f74b233433f9424263bcf49c5b7'
+      }
     })
-    .catch(error);
+      .then(status)
+      .then(json)
+      .then(function (data) {
+        // Objek/array JavaScript dari response.json() masuk lewat data.
+
+        // Menyusun komponen card artikel secara dinamis
+        var standingHTML = "";
+        data.standings[0].table.forEach(function (club) {
+          standingHTML += `
+          <tr>
+            <td style="padding:.5rem">
+              <img src="${club.team.crestUrl}" width=32 height=32 />
+              <span style="font-weight:bold;padding-bottom:.25rem"> ${club.team.name} </span>
+            </td>
+            <td>${club.playedGames}</td>
+            <td>${club.won}</td>
+            <td>${club.draw}</td>
+            <td>${club.lost}</td>
+            <td>${club.goalsFor}</td>
+            <td>${club.goalsAgainst}</td>
+            <td>${club.goalDifference}</td>
+            <td>${club.points}</td>
+          </tr>
+              `;
+        });
+        // Sisipkan komponen card ke dalam elemen dengan id #content
+        document.getElementById("standings").innerHTML = standingHTML;
+      })
+      .catch(error);
+  }
 }
 
 function getTeams() {
@@ -99,23 +98,40 @@ function getTeams() {
       if (response) {
         response.json().then(function (data) {
           var teamHTML = "";
-          data.standings.table.forEach(function (club) {
+          data.standings[0].table.forEach(function (club) {
             teamHTML += `
-              <div class="card medium">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img src="${club.team.crestUrl}" alt="${club.team.name} logo" class="activator"/>
+            <div class="col s12 m6 l4">
+              <div class="card">
+                <div class = "row">
+                  <div class="col s5 m5 l5">
+                    <img src="${club.team.crestUrl}" alt="${club.team.name} logo" width=128 height=128 style="padding-left:5px"/>
+                  </div>
+                  <div class="col s7 m7 l7" style="margin-top:3em">
+                    <a href="./team.html?id=${club.team.id}" style="text-decoration:none">
+                      <span class="card-title" >${club.team.name}</span>
+                    </a>
+                  </div>
                 </div>
                 <div class="card-content">
-                  <a href="./team.html?id=${club.team.id}">
-                  <span class="card-title activator">${club.team.name}<i class="material-icons right">more_vert</i></span>
-                  <p> lorem ipsum </p>
-                  </a>
-                </div>
-                <div class="card-reveal">
-                  <span class="card-title activator">Card Title<i class="material-icons right">close</i></span>
-                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                  <table class="centered">
+                    <thead>
+                      <tr>
+                        <th> Win  </th>
+                        <th> Draw </th>
+                        <th> Lost </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> ${club.won} </td>
+                        <td> ${club.draw} </td>
+                        <td> ${club.lost} </td>
+                      <tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
+            </div>
             `;
           });
           // Sisipkan komponen card ke dalam elemen dengan id #content
@@ -123,46 +139,62 @@ function getTeams() {
         });
       }
     });
-  }
+  } else {
+    fetch(base_url + "competitions/2021/standings", {
+      headers: {
+        'X-Auth-Token': '47e21f74b233433f9424263bcf49c5b7'
+      }
+    })
+      .then(status)
+      .then(json)
+      .then(function (data) {
+        // Objek/array JavaScript dari response.json() masuk lewat data.
 
-  fetch(base_url + "competitions/2021/standings", {
-    headers: {
-      'X-Auth-Token': '47e21f74b233433f9424263bcf49c5b7'
-    }
-  })
-    .then(status)
-    .then(json)
-    .then(function (data) {
-      // Objek/array JavaScript dari response.json() masuk lewat data.
+        // Menyusun komponen card artikel secara dinamis
+        var standingHTML = "";
+        console.log(data)
 
-      // Menyusun komponen card artikel secara dinamis
-      var standingHTML = "";
-      console.log(data)
-
-      data.standings[0].table.forEach(function (club) {
-        standingHTML += `
-        <div class="col s12 m6 l4">
-          <div class="card medium">
-            <div class = "row">
-              <div class="col s5 m5 l5">
-                <img src="${club.team.crestUrl}" alt="${club.team.name} logo" width=128 height=128 style="padding-left:5px"/>
+        data.standings[0].table.forEach(function (club) {
+          standingHTML += `
+          <div class="col s12 m6 l4">
+            <div class="card">
+              <div class = "row">
+                <div class="col s5 m5 l5">
+                  <img src="${club.team.crestUrl}" alt="${club.team.name} logo" width=128 height=128 style="padding-left:5px"/>
+                </div>
+                <div class="col s7 m7 l7" style="margin-top:3em">
+                  <a href="./team.html?id=${club.team.id}">
+                    <span class="card-title" >${club.team.name}</span>
+                  </a>
+                </div>
               </div>
-              <div class="col s7 m7 l7" style="margin-top:3em">
-                <a href="./team.html?id=${club.team.id}">
-                  <span class="card-title" >${club.team.name}</span>
-                </a>
+              <div class="card-content">
+                <table class="centered">
+                  <thead>
+                    <tr>
+                      <th> Win  </th>
+                      <th> Draw </th>
+                      <th> Lost </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> ${club.won} </td>
+                      <td> ${club.draw} </td>
+                      <td> ${club.lost} </td>
+                    <tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <p class="card-content"> lorem ipsum </p>
-            
           </div>
-        </div>
-            `;
-      });
-      // Sisipkan komponen card ke dalam elemen dengan id #content
-      document.getElementById("team-list").innerHTML = standingHTML;
-    })
-    .catch(error);
+              `;
+        });
+        // Sisipkan komponen card ke dalam elemen dengan id #content
+        document.getElementById("team-list").innerHTML = standingHTML;
+      })
+      .catch(error);
+  }
 }
 
 function getTeamById() {
