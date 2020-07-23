@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (this.readyState == 4) {
                 var content = document.querySelector("#body-content");
                 if (page === "contact") {
+                    getTopScorers();
                     getStandings();
                 } else if (page === "saved") {
                     getSavedTeams();
