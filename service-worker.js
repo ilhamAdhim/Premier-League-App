@@ -17,7 +17,12 @@ var urlsToCache = [
   "/manifest.json",
   "/iconsplash_256.png",
   "/iconsplash_512.png",
-  "assets/offline.png"
+  "assets/offline.png",
+  "../assets/first-top-scorer.png",
+  "../assets/second-top-scorer.png",
+  "../assets/third-top-scorer.png",
+  "https://unpkg.com/aos@next/dist/aos.js",
+  "https://unpkg.com/aos@next/dist/aos.css"
 ];
 
 self.addEventListener("install", function (event) {
@@ -42,6 +47,7 @@ self.addEventListener("fetch", function (event) {
     );
   } else {
     event.respondWith(
+
       caches.match(event.request, { ignoreSearch: true }).then(function (response) {
         return response || fetch(event.request);
       })
