@@ -1,6 +1,6 @@
 var base_url = "https://api.football-data.org/v2/";
 
-let pathImagesTopScorer = ["../assets/first-top-scorer.png", "../assets/secondtop-scorer.png", "../assets/third-top-scorer.png"]
+let pathImagesTopScorer = ["../assets/first-top-scorer.png", "../assets/second-top-scorer.png", "../assets/third-top-scorer.png"]
 
 // Blok kode yang akan di panggil jika fetch berhasil
 function status(response) {
@@ -34,7 +34,7 @@ function getStandings() {
           var standingHTML = "";
           data.standings[0].table.forEach(function (club) {
             standingHTML += `
-            <tr class="team-info">
+            <tr class="team-info" data-aos="fade-down" data-aos-delay ="300">
               <td style="padding:.5rem">
                 <img src="${club.team.crestUrl}" width=32 height=32 class="team-logo"/>
                 <span style="font-weight:bold;padding-bottom:.25rem"> ${club.team.name} </span>
@@ -71,7 +71,7 @@ function getStandings() {
         var standingHTML = "";
         data.standings[0].table.forEach(function (club) {
           standingHTML += `
-          <tr>
+          <tr class="team-info" data-aos="fade-down" data-aos-duration ="300">
             <td>
               <img src="${club.team.crestUrl}" width=32 height=32 />
               <span style="font-weight:bold;padding-bottom:.25rem"> ${club.team.name} </span>
@@ -104,7 +104,7 @@ function getTopScorers() {
           raw.scorers.forEach(function (data) {
             rank++;
             scorersHTML += `
-            <div class = "col s12 m4 l4">
+            <div class = "col s12 m4 l4"  data-aos="fade-left" data-aos-delay = "1500">
               <div class="card">
                 <div class="row">
                   <div class="col s6 m12 l12 card-image" >
@@ -144,11 +144,13 @@ function getTopScorers() {
     .then(function (raw) {
       var scorersHTML = "";
       let rank = 0;
+      let duration = 200;
 
       raw.scorers.forEach(function (data) {
         rank++;
+        duration += 500;
         scorersHTML += `
-            <div class = "col s12 m4 l4">
+            <div class = "col s12 m4 l4" data-aos="fade-left" data-aos-duration= ${duration}>
               <div class="card">
                 <div class="row">
                   <div class="col s6 m12 l12 card-image" >
@@ -187,19 +189,19 @@ function getTeams() {
           var teamHTML = "";
           data.standings[0].table.forEach(function (club) {
             teamHTML += `
-            <div class="col s12 m6 l4">
-              <div class="card small">
+            <div class="col s12 m6 l4" data-aos="fade-left" data-aos-delay="1000">
+              <div class="card">
                 <div class = "row">
-                  <div class="col s5 m5 l5">
+                  <div class="col s4 m4 l4 top-space">
                     <img src="${club.team.crestUrl}" alt="${club.team.name} logo" width=100 height=100 style="padding-left:5px"/>
                   </div>
-                  <div class="col s7 m7 l7" style="margin-top:1.5em">
-                    <a href="./team.html?id=${club.team.id}" style="font-weight:bold;text-decoration:none">
-                      <span class="card-title" >${club.team.name}</span>
+                  <div class="col s8 m8 l8 top-space">
+                    <a href="./team.html?id=${club.team.id}" >
+                      <span class="center top-space" style="font-size:1.2em;" >${club.team.name}</span>
                     </a>
                   </div>
                 </div>
-                <div class="card-content">
+                <div class="card-content stats">
                   <table class="centered">
                     <thead>
                       <tr>
@@ -238,20 +240,20 @@ function getTeams() {
       // Objek/array JavaScript dari response.json() masuk lewat data.
 
       // Menyusun komponen card artikel secara dinamis
-      var standingHTML = "";
+      var teamHTML = "";
       console.log(data)
-
+      let delayAnimation = 200;
       data.standings[0].table.forEach(function (club) {
-        standingHTML += `
-          <div class="col s12 m6 l4">
-            <div class="card">
+        teamHTML += `
+          <div class="col s12 m6 l4" data-aos="fade-left">
+            <div class="card ">
               <div class = "row">
-                <div class="col s4 m4 l4">
+                <div class="col s4 m4 l4 top-space">
                   <img src="${club.team.crestUrl}" alt="${club.team.name} logo" width=100 height=100 style="padding-left:5px"/>
                 </div>
-                <div class="col s8 m8 l8" style="margin-top:1.5em">
+                <div class="col s8 m8 l8 top-space">
                   <a href="./team.html?id=${club.team.id}">
-                    <span style="font-size:1rem">${club.team.name}</span>
+                    <span class="center top-space" style="font-size:1.2em;">${club.team.name}</span>
                   </a>
                 </div>
               </div>
@@ -278,7 +280,7 @@ function getTeams() {
               `;
       });
       // Sisipkan komponen card ke dalam elemen dengan id #content
-      document.getElementById("team-list").innerHTML = standingHTML;
+      document.getElementById("team-list").innerHTML = teamHTML;
     })
     .catch(error);
 

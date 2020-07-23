@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="css/materialize.min.css" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <meta name="theme-color" content="#061951" />
 </head>
 
@@ -29,14 +30,15 @@
 
   <div class="container" id="body-content"></div>
 
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script src="js/materialize.min.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/api.js"></script>
   <script src="js/idb.js"></script>
   <script src="js/db.js"></script>
 
-
   <script>
+    AOS.init();
     // REGISTER SERVICE WORKER
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {

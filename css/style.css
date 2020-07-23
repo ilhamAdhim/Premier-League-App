@@ -17,7 +17,7 @@ nav .brand-logo {
 .center {
   display: block;
   margin: auto;
-  width: 50%;
+  width: 90%;
 }
 
 .card.large {
@@ -34,4 +34,8 @@ nav .brand-logo {
 
 .card-content.stats {
   padding: 8px;
+}
+
+.top-space {
+  margin-top: 1.5em;
 }
