@@ -15,19 +15,23 @@ nav .brand-logo {
 }
 
 .center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  display: block;
+  margin: auto;
+  width: 50%;
 }
 
-.badge-rank {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  color: white;
-  padding: 0;
-  text-align: center;
+.card.large {
+  height: 750px;
+}
+
+.team-info .team-logo {
+  transition: transform 0.2s; /* Animation */
+}
+
+.team-info:hover .team-logo {
+  transform: scale(1.4);
+}
+
+.card-content.stats {
+  padding: 8px;
 }

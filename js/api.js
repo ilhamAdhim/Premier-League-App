@@ -1,5 +1,7 @@
 var base_url = "https://api.football-data.org/v2/";
 
+let pathImagesTopScorer = ["../assets/first-top-scorer.png", "../assets/secondtop-scorer.png", "../assets/third-top-scorer.png"]
+
 // Blok kode yang akan di panggil jika fetch berhasil
 function status(response) {
   if (response.status !== 200) {
@@ -32,9 +34,9 @@ function getStandings() {
           var standingHTML = "";
           data.standings[0].table.forEach(function (club) {
             standingHTML += `
-            <tr>
+            <tr class="team-info">
               <td style="padding:.5rem">
-                <img src="${club.team.crestUrl}" width=32 height=32 />
+                <img src="${club.team.crestUrl}" width=32 height=32 class="team-logo"/>
                 <span style="font-weight:bold;padding-bottom:.25rem"> ${club.team.name} </span>
               </td>
               <td>${club.playedGames}</td>
@@ -94,7 +96,6 @@ function getStandings() {
 
 function getTopScorers() {
   if ("caches" in window) {
-    console.log("mengambil data top scorer dari cache")
     caches.match(base_url + "competitions/PL/scorers?limit=3").then(function (response) {
       if (response) {
         response.json().then(function (raw) {
@@ -103,25 +104,27 @@ function getTopScorers() {
           raw.scorers.forEach(function (data) {
             rank++;
             scorersHTML += `
-              <div class="card horizontal">
-                <div class="card-image">
-                  <img src="https://lorempixel.com/100/190/nature/6">
-                </div>
-                <div class="card-stacked">
-                  <div class="card-title">
-                    <b> ${data.player.name} </b>
+            <div class = "col s12 m4 l4">
+              <div class="card">
+                <div class="row">
+                  <div class="col s6 m12 l12 card-image" >
+                    <img src="${pathImagesTopScorer[rank - 1]}" width=50% class="center" style="height:auto">
+                  </div>                  
+                  <div class="col s6 m12 l12">
+                    <div class="card-content">
+                      <b> ${data.player.name} </b>
+                      <hr>
+                      ${data.numberOfGoals} Goals Scored
+                      <hr>
+                      <!-- Default shirt number --> 
+                      Shirt Number : ${data.player.shirtNumber !== null ? data.player.shirtNumber : 0} <br>
+                      Nationality :  ${data.player.nationality}   <br>
+                      ${data.player.position} in <b> ${data.team.name} </b><br>
+                    </div>
                   </div>
-                  <div class="card-content">
-                  ${data.numberOfGoals} Goals Scored
-                  <hr>
-                  Shirt Number : ${data.player.shirtNumber} <br>
-                  Nationality :  ${data.player.nationality} <br>
-                  Team : ${data.team.name} <br>
-                  Position : ${data.player.position} <br>
-                  </div>
-                  <div class="btn-floating halfway-fab waves-effect waves-light red">#${rank}</div>
                 </div>
               </div>
+            </div>
             `;
             rank = 0;
           });
@@ -131,7 +134,6 @@ function getTopScorers() {
       }
     });
   }
-  console.log("mengambil data top scorer dari api")
   fetch(base_url + "competitions/PL/scorers?limit=3", {
     headers: {
       'X-Auth-Token': '47e21f74b233433f9424263bcf49c5b7'
@@ -147,24 +149,22 @@ function getTopScorers() {
         rank++;
         scorersHTML += `
             <div class = "col s12 m4 l4">
-              <div class="card horizontal">
-                <div class="card-image">
-                  <img src="https://lorempixel.com/100/190/nature/6">
-                </div>
-                <div class="card-stacked">
-                  
-                  <div class="card-content">
-                  <b> ${data.player.name.slice(0, 16)} </b>
-                  <hr>
-                    ${data.numberOfGoals} Goals Scored
-                    <div class="badge-rank halfway-fab waves-effect waves-light red" style="top: 2.5rem;right: -4rem;"> 
-                      <div style="margin-top:1em"> <h5> # ${rank} </h5> </div>
+              <div class="card">
+                <div class="row">
+                  <div class="col s6 m12 l12 card-image" >
+                    <img src="${pathImagesTopScorer[rank - 1]}" width=50% class="center" style="height:auto">
+                  </div>                  
+                  <div class="col s6 m12 l12">
+                    <div class="card-content">
+                      <b> ${data.player.name} </b>
+                      <hr>
+                      ${data.numberOfGoals} Goals Scored
+                      <hr>
+                      <!-- Default shirt number --> 
+                      Shirt Number : ${data.player.shirtNumber !== null ? data.player.shirtNumber : 0} <br>
+                      Nationality :  ${data.player.nationality}   <br>
+                      ${data.player.position} in <b> ${data.team.name} </b><br>
                     </div>
-                    <hr>
-                    <!-- Default shirt number --> 
-                    Shirt Number : ${data.player.shirtNumber !== null ? data.player.shirtNumber : 0} <br>
-                    Nationality :  ${data.player.nationality}   <br>
-                    ${data.player.position} in <b> ${data.team.name} </b><br>
                   </div>
                 </div>
               </div>
@@ -188,12 +188,12 @@ function getTeams() {
           data.standings[0].table.forEach(function (club) {
             teamHTML += `
             <div class="col s12 m6 l4">
-              <div class="card">
+              <div class="card small">
                 <div class = "row">
                   <div class="col s5 m5 l5">
-                    <img src="${club.team.crestUrl}" alt="${club.team.name} logo" width=128 height=128 style="padding-left:5px"/>
+                    <img src="${club.team.crestUrl}" alt="${club.team.name} logo" width=100 height=100 style="padding-left:5px"/>
                   </div>
-                  <div class="col s7 m7 l7" style="margin-top:3em">
+                  <div class="col s7 m7 l7" style="margin-top:1.5em">
                     <a href="./team.html?id=${club.team.id}" style="font-weight:bold;text-decoration:none">
                       <span class="card-title" >${club.team.name}</span>
                     </a>
@@ -246,17 +246,17 @@ function getTeams() {
           <div class="col s12 m6 l4">
             <div class="card">
               <div class = "row">
-                <div class="col s5 m5 l5">
-                  <img src="${club.team.crestUrl}" alt="${club.team.name} logo" width=128 height=128 style="padding-left:5px"/>
+                <div class="col s4 m4 l4">
+                  <img src="${club.team.crestUrl}" alt="${club.team.name} logo" width=100 height=100 style="padding-left:5px"/>
                 </div>
-                <div class="col s7 m7 l7" style="margin-top:3em">
+                <div class="col s8 m8 l8" style="margin-top:1.5em">
                   <a href="./team.html?id=${club.team.id}">
-                    <span class="card-title" >${club.team.name}</span>
+                    <span style="font-size:1rem">${club.team.name}</span>
                   </a>
                 </div>
               </div>
-              <div class="card-content">
-                <table>
+              <div class="card-content stats">
+                <table class="centered">
                   <thead>
                     <tr>
                       <th> Win  </th>
