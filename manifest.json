@@ -1,7 +1,7 @@
 {
-  "name": "My First PWA",
-  "short_name": "My PWA",
-  "description": "Aplikasi PWA pertama saya",
+  "name": "Pre-League App",
+  "short_name": "Pre-League",
+  "description": "All about Premiere League 2020",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#061951",

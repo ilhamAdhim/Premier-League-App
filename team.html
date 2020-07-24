@@ -4,13 +4,17 @@
 <head>
   <meta charset="UTF-8" />
   <title>Premiere League</title>
+
   <meta name="description" content="My first PWA" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#061951" />
+
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:300,400,500|Anton' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="css/materialize.min.css" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="stylesheet" href="css/style.css">
-
-  <meta name="theme-color" content="#061951" />
+  <link rel="icon" href="iconsplash_256.png" type="image/icon type">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 </head>
 
@@ -18,8 +22,8 @@
   <!-- Navigasi -->
   <nav class="blue-feel" role="navigation">
     <div class="nav-wrapper container">
-      <a href="#" class="brand-logo" id="logo-container">Premiere League</a>
-      <a href="./index.html" class="sidenav-trigger" data-target="nav-mobile">
+      <a href="./index.html#about" class="brand-logo" id="logo-container">Premiere League</a>
+      <a href="./index.html#about" class="sidenav-trigger" data-target="nav-mobile">
         <i class="material-icons">arrow_back</i>
       </a>
       <ul class="topnav right hide-on-med-and-down"></ul>
@@ -29,6 +33,7 @@
   <!-- Akhir Navigasi -->
 
   <div class="container" id="body-content"></div>
+
   <div class="fixed-action-btn">
     <a class="btn-floating btn-large blue-feel" id="save">
       <i class="large material-icons">save</i>
@@ -38,8 +43,11 @@
   <script src="js/materialize.min.js"></script>
   <script src="js/api.js"></script>
   <script src="js/idb.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"> </script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/db.js"></script>
   <script>
+    AOS.init()
     // REGISTER SERVICE WORKER
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
@@ -68,6 +76,7 @@
         getSavedTeamById();
       } else {
         var item = getTeamById();
+        getPlayers();
       }
       btnSave.onclick = function () {
         console.log("Tombol FAB di klik.");
@@ -79,5 +88,7 @@
   </script>
 
 </body>
+
+
 
 </html>
