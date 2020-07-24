@@ -50,30 +50,29 @@ function getStandings() {
             </tr>
             `;
           });
-          // Sisipkan komponen card ke dalam elemen dengan id #content
+          // Sisipkan komponen card ke dalam elemen dengan id #standings
           document.getElementById("standings").innerHTML = standingHTML;
         });
       }
     });
-  } else {
+  }
+  fetch(base_url + "competitions/2021/standings", {
+    headers: {
+      'X-Auth-Token': '47e21f74b233433f9424263bcf49c5b7'
+    }
+  })
+    .then(status)
+    .then(json)
+    .then(function (data) {
+      // Objek/array JavaScript dari response.json() masuk lewat data.
 
-    fetch(base_url + "competitions/2021/standings", {
-      headers: {
-        'X-Auth-Token': '47e21f74b233433f9424263bcf49c5b7'
-      }
-    })
-      .then(status)
-      .then(json)
-      .then(function (data) {
-        // Objek/array JavaScript dari response.json() masuk lewat data.
-
-        // Menyusun komponen card artikel secara dinamis
-        var standingHTML = "";
-        data.standings[0].table.forEach(function (club) {
-          standingHTML += `
+      // Menyusun komponen card artikel secara dinamis
+      var standingHTML = "";
+      data.standings[0].table.forEach(function (club) {
+        standingHTML += `
           <tr class="team-info" data-aos="fade-down" data-aos-duration ="300">
             <td>
-              <img src="${club.team.crestUrl}" width=32 height=32 />
+              <img src="${club.team.crestUrl}" width=32 height=32 class="team-logo"/>
               <span style="font-weight:bold;padding-bottom:.25rem"> ${club.team.name} </span>
             </td>
             <td>${club.playedGames}</td>
@@ -86,12 +85,12 @@ function getStandings() {
             <td>${club.points}</td>
           </tr>
               `;
-        });
-        // Sisipkan komponen card ke dalam elemen dengan id #content
-        document.getElementById("standings").innerHTML = standingHTML;
-      })
-      .catch(error);
-  }
+      });
+      // Sisipkan komponen card ke dalam elemen dengan id #standings
+      document.getElementById("standings").innerHTML = standingHTML;
+    })
+    .catch(error);
+
 }
 
 function getTopScorers() {
@@ -104,7 +103,7 @@ function getTopScorers() {
           raw.scorers.forEach(function (data) {
             rank++;
             scorersHTML += `
-            <div class = "col s12 m4 l4"  data-aos="fade-left" data-aos-delay = "1500">
+             <div class = "col s12 m4 l4" data-aos="fade-left" data-aos-delay= 1500>
               <div class="card">
                 <div class="row">
                   <div class="col s6 m12 l12 card-image" >
@@ -112,7 +111,7 @@ function getTopScorers() {
                   </div>                  
                   <div class="col s6 m12 l12">
                     <div class="card-content">
-                      <b> ${data.player.name} </b>
+                      <b> <p class="center" style="font-size:12px"> ${data.player.name} </p> </b>
                       <hr>
                       ${data.numberOfGoals} Goals Scored
                       <hr>
@@ -128,7 +127,7 @@ function getTopScorers() {
             `;
             rank = 0;
           });
-          // Sisipkan komponen card ke dalam elemen dengan id #content
+          // Sisipkan komponen card ke dalam elemen dengan id #top-scorers
           document.getElementById("top-scorers").innerHTML = scorersHTML;
         });
       }
@@ -150,7 +149,7 @@ function getTopScorers() {
         rank++;
         duration += 500;
         scorersHTML += `
-            <div class = "col s12 m4 l4" data-aos="fade-left" data-aos-duration= ${duration}>
+          <div class = "col s12 m4 l4" data-aos="fade-left" data-aos-duration= ${duration}>
               <div class="card">
                 <div class="row">
                   <div class="col s6 m12 l12 card-image" >
@@ -174,7 +173,7 @@ function getTopScorers() {
             `;
 
       });
-      // Sisipkan komponen card ke dalam elemen dengan id #content
+      // Sisipkan komponen card ke dalam elemen dengan id #top-scorers
       document.getElementById("top-scorers").innerHTML = scorersHTML;
     })
     .catch(error);
@@ -293,18 +292,26 @@ function getTeamById() {
     var idParam = urlParams.get("id");
 
     if ("caches" in window) {
-      caches.match(base_url + "article/" + idParam).then(function (response) {
+      caches.match(base_url + "teams/" + idParam).then(function (response) {
         if (response) {
           response.json().then(function (data) {
             var clubHTML = `
             <div class="card">
-              <div class="card-image waves-effect waves-block waves-light">
-                <img src="${data.result.cover}" />
-              </div>
-              <div class="card-content">
-                <span class="card-title">${data.result.post_title}</span>
-                ${snarkdown(data.result.post_content)}
-              </div>
+              <div class="row card-content">
+                <div class="col s12 m4 l4 center-align">
+                  <img src="${data.crestUrl}" alt="${data.shortName}" width=128px height=128px/>
+                </div>
+                <div class="col s12 m8 l8">
+                <div class="center-align" style="padding:8px"> <b> ${data.name} </b> </div>
+                    <i class="material-icons" style="font-size:.8rem"> sports_soccer </i>  ${data.venue} <br><br>
+                    <i class="material-icons" style="font-size:.8rem"> location_on </i>  ${data.address}  <br><br>
+                    <i class="material-icons" style="font-size:.8rem"> phone </i> ${data.phone}  <br><br>
+                    <b> Official Website : </b> <a href="${data.website}"> ${data.website}  </a> 
+                    </div>
+                    </div>
+                    <hr>
+                <h4> Players </h4>
+                <div class="row" id="player-list"></div>
             </div>
           `;
             // Sisipkan komponen card ke dalam elemen dengan id #content
@@ -316,30 +323,110 @@ function getTeamById() {
       });
     }
 
-    fetch(base_url + "article/" + idParam)
+    fetch(base_url + "teams/" + idParam, {
+      headers: {
+        'X-Auth-Token': '47e21f74b233433f9424263bcf49c5b7'
+      }
+    })
       .then(status)
       .then(json)
       .then(function (data) {
         // Objek JavaScript dari response.json() masuk lewat variabel data.
         console.log(data);
         // Menyusun komponen card artikel secara dinamis
-        var clubHTML = `
-          <div class="card">
-            <div class="card-image waves-effect waves-block waves-light">
-              <img src="${data.result.cover}" />
+        var teamHTML = `
+        <div class="card">
+          <div class="row card-content">
+            <div class="col s12 m4 l4 center-align">
+              <img src="${data.crestUrl}" alt="${data.shortName}" width=128px height=128px/>
             </div>
-            <div class="card-content">
-              <span class="card-title">${data.result.post_title}</span>
-              ${snarkdown(data.result.post_content)}
-            </div>
-          </div>
+            <div class="col s12 m8 l8">
+            <div class="center-align" style="padding:8px"> <b> ${data.name} </b> </div>
+                <i class="material-icons" style="font-size:.8rem"> sports_soccer </i>  ${data.venue} <br><br>
+                <i class="material-icons" style="font-size:.8rem"> location_on </i>  ${data.address}  <br><br>
+                <i class="material-icons" style="font-size:.8rem"> phone </i> ${data.phone}  <br><br>
+                <b> Official Website : </b> <a href="${data.website}"> ${data.website}  </a> 
+                </div>
+                </div>
+                <hr>
+            <h4> Players </h4>
+            <div class="row" id="player-list"></div>
+        </div>
         `;
         // Sisipkan komponen card ke dalam elemen dengan id #content
-        document.getElementById("body-content").innerHTML = clubHTML;
+        document.getElementById("body-content").innerHTML = teamHTML;
         // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
         resolve(data);
       });
   });
+}
+
+
+function getPlayers() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var idParam = urlParams.get("id");
+
+  if ("caches" in window) {
+    caches.match(base_url + "teams/" + idParam).then(function (response) {
+      if (response) {
+        response.json().then(function (data) {
+          var playerHTML = "";
+          data.squad.forEach(function (player) {
+            playerHTML += player.position !== null ? `
+              <div class="col s12 m3 l3">               
+                <div class="card text-black">
+                  <div class="card-content blue lighten-5 details">
+                    ${player.name.substr(0, 20)}<br>
+                    ${player.position}<br> 
+                  </div>
+                  <div class="card-content details">
+                    
+                    Nationality ${player.nationality}
+                  </div>
+                </div>
+              </div>
+              ` : '';
+          });
+          // Sisipkan komponen card ke dalam elemen dengan id #content
+          document.getElementById("player-list").innerHTML = playerHTML;
+        });
+      }
+    });
+  }
+  fetch(base_url + "teams/" + idParam, {
+    headers: {
+      'X-Auth-Token': '47e21f74b233433f9424263bcf49c5b7'
+    }
+  })
+    .then(status)
+    .then(json)
+    .then(function (data) {
+      // Objek/array JavaScript dari response.json() masuk lewat data.
+
+      // Menyusun komponen card artikel secara dinamis
+      var playerHTML = "";
+      console.log(data)
+      let delayAnimation = 200;
+      data.squad.forEach(function (player) {
+        playerHTML += player.position !== null && player.nationality.length < 8 ? `
+        <div class="col s12 m3 l3">               
+          <div class="card text-black">
+            <div class="card-content blue lighten-5 details">
+              ${player.name.substr(0, 20)}<br>
+              ${player.position}<br> 
+            </div>
+            <div class="card-content details">
+              Nationality ${player.nationality}
+            </div>
+          </div>
+        </div>
+        ` : '';
+      });
+      // Sisipkan komponen card ke dalam elemen dengan id #content
+      document.getElementById("player-list").innerHTML = playerHTML;
+    })
+    .catch(error);
+
 }
 
 function getSavedTeams() {
@@ -350,18 +437,18 @@ function getSavedTeams() {
     articles.forEach(function (article) {
       var description = article.post_content.substring(0, 100);
       articlesHTML += `
-                  <div class="card">
-                    <a href="./team.html?id=${article.ID}&saved=true">
-                      <div class="card-image waves-effect waves-block waves-light">
-                        <img src="${article.cover}" />
-                      </div>
-                    </a>
-                    <div class="card-content">
-                      <span class="card-title truncate">${article.post_title}</span>
-                      <p>${description}</p>
-                    </div>
-                  </div>
-                `;
+            <div class="card">
+              <a href="./team.html?id=${article.ID}&saved=true">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img src="${article.cover}" />
+                </div>
+              </a>
+              <div class="card-content">
+                <span class="card-title truncate">${article.post_title}</span>
+                <p>${description}</p>
+              </div>
+            </div>
+          `;
     });
     // Sisipkan komponen card ke dalam elemen dengan id #body-content
     document.getElementById("body-content").innerHTML = articlesHTML;
