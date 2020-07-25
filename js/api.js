@@ -6,7 +6,7 @@ var standingsURL = `${base_url}competitions/${league_id}/standings`
 var topScorersURL = `${base_url}competitions/PL/scorers?limit=3`
 
 // All request in one function with dynamic url
-var fetchApi = url => {
+let fetchApi = url => {
   return fetch(url, {
     headers: {
       'X-Auth-Token': API_KEY
@@ -17,10 +17,12 @@ var fetchApi = url => {
     .catch(err => Promise.reject(err));
 }
 
-var cacheAPI = url => caches.match(url).then(response => response.json());
+let cacheAPI = url => caches.match(url).then(response => {
+  return response === undefined ? 'Caching' : response.json();
+});
 
 // Blok kode yang akan di panggil jika fetch berhasil
-function status(response) {
+let status = response => {
   if (response.status !== 200) {
     console.log("Error : " + response.status);
     // Method reject() akan membuat blok catch terpanggil
@@ -32,26 +34,42 @@ function status(response) {
 }
 
 // Blok kode untuk memparsing json menjadi array JavaScript
-function json(response) {
+let json = response => {
   return response.json();
 }
 
 // Blok kode untuk meng-handle kesalahan di blok catch
-function error(error) {
+let error = error => {
   // Parameter error berasal dari Promise.reject()
   console.log("Error : " + error);
 }
 
-let getStandings = () => "caches" in window ? cacheAPI(standingsURL) : fetchApi(standingsURL)
+let getStandings = () => {
+  let result;
 
-let getTopScorers = () => "caches" in window ? cacheAPI(topScorersURL) : fetchApi(topScorersURL);
+  if ("caches" in window) result = cacheAPI(standingsURL)
+  result = fetchApi(standingsURL)
+  return result
+}
+
+let getTopScorers = () => {
+  let result;
+
+  if ("caches" in window) result = cacheAPI(topScorersURL)
+  result = fetchApi(topScorersURL);
+  return result
+}
 
 let getTeamById = () => {
   return new Promise(function (resolve, reject) {
     // Ambil nilai query parameter (?id=)
     var urlParams = new URLSearchParams(window.location.search);
     var idParam = urlParams.get("id");
-    let dataTeam = "caches" in window ? cacheAPI(`${base_url}teams/${idParam}`) : fetchApi(`${base_url}teams / ${idParam}`);
+
+    let dataTeam;
+
+    if ("caches" in window) result = cacheAPI(`${base_url}teams/${idParam}`);
+    dataTeam = fetchApi(`${base_url}teams/${idParam}`);
     resolve(dataTeam);
   });
 }
