@@ -36,6 +36,12 @@
   <div class="container">
     <div class="center-align" id="loader"></div>
     <div id="body-content"></div>
+    <hr>
+    <h4> Next Match</h4>
+    <div id="next-match-list"></div>
+    <hr>
+    <h4> Players </h4>
+    <div class="row" id="player-list"></div>
   </div>
 
   <div class="fixed-action-btn">
@@ -83,6 +89,7 @@
       } else {
         var item = renderTeamById();
         renderPlayers();
+        renderMatches();
       }
       btnSave.onclick = function () {
         console.log("Tombol FAB di klik.");

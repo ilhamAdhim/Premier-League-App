@@ -3,16 +3,16 @@ let pathImagesTopScorer = ["../assets/first-top-scorer.png", "../assets/second-t
 let showLoader = () => {
     let html =
         `<div class="preloader-wrapper medium active">
-        <div class="spinner-layer spinner-green-only">
-            <div class="circle-clipper left">
-            <div class="circle"></div>
-            </div><div class="gap-patch">
-            <div class="circle"></div>
-            </div><div class="circle-clipper right">
-            <div class="circle"></div>
+            <div class="spinner-layer spinner-green-only">
+                <div class="circle-clipper left">
+                <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                <div class="circle"></div>
+                </div>
             </div>
-        </div>
-    </div>`
+        </div>`
     document.getElementById("loader").innerHTML = html;
 }
 
@@ -25,6 +25,27 @@ let renderStandings = () => {
 
     let standings = getStandings();
     standings.then(data => {
+        let tableStanding =
+            `<table class="responsive-table highlight">
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    <th>Matches</th>
+                    <th>Win</th>
+                    <th>Draw</th>
+                    <th>Lost</th>
+                    <th>GF</th>
+                    <th>GA</th>
+                    <th>GD</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+
+            <tbody id="data-standing">
+            </tbody>
+        </table>`;
+
+
         let standingHTML = "";
         data.standings[0].table.forEach(function (club) {
             standingHTML += `
@@ -45,7 +66,9 @@ let renderStandings = () => {
           `
         });
         // Sisipkan komponen card ke dalam elemen dengan id #standings
-        document.getElementById("standings").innerHTML = standingHTML;
+
+        document.getElementById("standings").innerHTML = tableStanding;
+        document.getElementById("data-standing").innerHTML = standingHTML;
     });
 
     hideLoader();
@@ -54,7 +77,7 @@ let renderStandings = () => {
 let renderTopScorers = () => {
     showLoader();
     let scorersHTML = "";
-    let duration = 200;
+    let duration = 0;
     let rank = 0;
 
     let scorers = getTopScorers();
@@ -62,7 +85,7 @@ let renderTopScorers = () => {
     scorers.then(raw => {
         raw.scorers.forEach(function (data) {
             rank++;
-            duration += 500;
+            duration += 200;
 
             scorersHTML += `
              <div class = "col s12 m4 l4" data-aos="fade-left" data-aos-duration= ${duration}>
@@ -79,7 +102,7 @@ let renderTopScorers = () => {
                       <hr>
                       <!-- Default shirt number --> 
                       Shirt Number : ${data.player.shirtNumber !== null ? data.player.shirtNumber : 0} <br>
-                      Nationality :  ${data.player.nationality}   <br>
+                      Nationality  ${data.player.nationality}   <br>
                       ${data.player.position} in <b> ${data.team.name} </b><br>
                     </div>
                   </div>
@@ -105,8 +128,8 @@ let renderTeams = () => {
         data.standings[0].table.forEach(function (club) {
             teamHTML += `
             <div class="col s12 m6 l4" data-aos="fade-left">
-              <div class="card ">
-                <div class = "row">
+              <div class="card">
+                <div class = "row card-content">
                   <div class="col s4 m4 l4 top-space">
                     <img src="${club.team.crestUrl}" alt="${club.team.name} logo" width=100 height=100 style="padding-left:5px"/>
                   </div>
@@ -150,25 +173,22 @@ let renderTeamById = () => {
     showLoader();
     let team = getTeamById();
     team.then(data => {
-        console.log(data)
         // Menyusun komponen card artikel secara dinamis
         var teamHTML = `
         <div class="card">
-          <div class="row card-content">
-            <div class="col s12 m4 l4 center-align">
-              <img src="${data.crestUrl}" alt="${data.shortName}" width=128px height=128px/>
+            <div class="row card-content">
+                <div class="col s12 m4 l4 center-align">
+                <img src="${data.crestUrl}" alt="${data.shortName}" width=128px height=128px/>
+                </div>
+                <div class="col s12 m8 l8">
+                    <div class="center-align" style="padding:8px"> <b> ${data.name} </b> </div>
+                        <i class="material-icons" style="font-size:.8rem"> sports_soccer </i>  ${data.venue} <br><br>
+                        <i class="material-icons" style="font-size:.8rem"> location_on </i>  ${data.address}  <br><br>
+                        <i class="material-icons" style="font-size:.8rem"> phone </i> ${data.phone !== null ? data.phone : 'No contact'}  <br><br>
+                        <b> Official Website : </b> <a href="${data.website}"> ${data.website}  </a> 
+                    </div>
+                </div>
             </div>
-            <div class="col s12 m8 l8">
-            <div class="center-align" style="padding:8px"> <b> ${data.name} </b> </div>
-                <i class="material-icons" style="font-size:.8rem"> sports_soccer </i>  ${data.venue} <br><br>
-                <i class="material-icons" style="font-size:.8rem"> location_on </i>  ${data.address}  <br><br>
-                <i class="material-icons" style="font-size:.8rem"> phone </i> ${data.phone}  <br><br>
-                <b> Official Website : </b> <a href="${data.website}"> ${data.website}  </a> 
-                </div>
-                </div>
-                <hr>
-            <h4> Players </h4>
-            <div class="row" id="player-list"></div>
         </div>
         `;
         // Sisipkan komponen card ke dalam elemen dengan id #content
@@ -184,11 +204,10 @@ let renderPlayers = () => {
     players.then(data => {
         // Menyusun komponen card artikel secara dinamis
         var playerHTML = "";
-        console.log(data)
         let delayAnimation = 200;
         data.squad.forEach(function (player) {
             playerHTML += player.position !== null && player.nationality.length < 8 ?
-                `<div class="col s12 m3 l3">               
+                `<div class="col s12 m3 l3">              
                     <div class="card text-black">
                         <div class="card-content blue lighten-5 details">
                             ${player.name.substr(0, 20)}<br>
@@ -204,7 +223,33 @@ let renderPlayers = () => {
         // Sisipkan komponen card ke dalam elemen dengan id #content
         document.getElementById("player-list").innerHTML = playerHTML;
     })
-
     hideLoader();
+}
 
+let renderMatches = () => {
+    showLoader();
+    let matchesPerTeam = getMatchesByTeam();
+    matchesPerTeam.then(response => {
+        let matchHTML;
+        response.matches.forEach((data) => {
+            console.log(data);
+            matchHTML +=
+                `<div class = "container">
+                    <div class = "row card">
+                        <div class = "card-content center-align">
+                            <div class="col s5"> ${data.homeTeam.name} </div>
+                            <div class="col s1" style="padding:0"> VS </div>
+                            <div class="col s5"> ${data.awayTeam.name} </div>
+                        </div>
+                        <div class="card-content right-align">
+                            <!-- Only get the date -->
+                            ${data.utcDate.substr(0, 10)}
+                        </div>
+                    </div>
+                </div>
+            `
+        });
+        // Sisipkan komponen card ke dalam elemen dengan id #next-match-list
+        document.getElementById("next-match-list").innerHTML = matchHTML;
+    }); hideLoader();
 }

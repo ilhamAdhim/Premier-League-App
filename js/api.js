@@ -47,24 +47,24 @@ let error = error => {
 let getStandings = () => {
   let result;
 
-  if ("caches" in window) result = cacheAPI(standingsURL)
+  if ("caches" in window) result = cacheAPI(standingsURL);
   result = fetchApi(standingsURL)
-  return result
+  return result;
 }
 
 let getTopScorers = () => {
   let result;
 
-  if ("caches" in window) result = cacheAPI(topScorersURL)
+  if ("caches" in window) result = cacheAPI(topScorersURL);
   result = fetchApi(topScorersURL);
-  return result
+  return result;
 }
 
 let getTeamById = () => {
   return new Promise(function (resolve, reject) {
     // Ambil nilai query parameter (?id=)
-    var urlParams = new URLSearchParams(window.location.search);
-    var idParam = urlParams.get("id");
+    let urlParams = new URLSearchParams(window.location.search);
+    let idParam = urlParams.get("id");
 
     let dataTeam;
 
@@ -72,6 +72,16 @@ let getTeamById = () => {
     dataTeam = fetchApi(`${base_url}teams/${idParam}`);
     resolve(dataTeam);
   });
+}
+
+let getMatchesByTeam = () => {
+  let result;
+  let urlParams = new URLSearchParams(window.location.search);
+  let idParam = urlParams.get("id");
+
+  if ("caches" in window) result = cacheAPI(`${base_url}teams/${idParam}/matches/?status=SCHEDULED`);
+  result = fetchApi(`${base_url}teams/${idParam}/matches/?status=SCHEDULED`);
+  return result;
 }
 
 function getSavedTeams() {
