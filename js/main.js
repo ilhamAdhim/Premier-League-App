@@ -128,36 +128,18 @@ let renderTeams = () => {
         data.standings[0].table.forEach(function (club) {
             teamHTML += `
             <div class="col s12 m6 l4" data-aos="fade-left">
-              <div class="card">
-                <div class = "row card-content">
-                  <div class="col s4 m4 l4 top-space">
-                    <img src="${club.team.crestUrl}" alt="${club.team.name} logo" width=100 height=100 style="padding-left:5px"/>
-                  </div>
-                  <div class="col s8 m8 l8 top-space">
-                    <a href="./team.html?id=${club.team.id}">
-                      <span class="center top-space" style="font-size:1.2em;">${club.team.name}</span>
-                    </a>
-                  </div>
+                <div class="card" style="height:300px">
+                    <div class = "card-content grey lighten-4" style="height:150px"></div>
+                    <div class="card-content" style="height:150px">
+                        <a href="./team.html?id=${club.team.id}">
+                            <span class="center top-space" style="font-size:1.2em;">${club.team.name}</span>
+                        </a>
+                    </div>
+                    
+                    <img src="${club.team.crestUrl}" alt="${club.team.name} logo" class="team-preview"/>
+                    
+                    
                 </div>
-                <div class="card-content stats">
-                  <table class="centered">
-                    <thead>
-                      <tr>
-                        <th> Win  </th>
-                        <th> Draw </th>
-                        <th> Lost </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td> ${club.won} </td>
-                        <td> ${club.draw} </td>
-                        <td> ${club.lost} </td>
-                      <tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
             </div>
                 `;
         });
