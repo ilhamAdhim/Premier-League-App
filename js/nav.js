@@ -46,12 +46,12 @@ document.addEventListener("DOMContentLoaded", function () {
             if (this.readyState == 4) {
                 var content = document.querySelector("#body-content");
                 if (page === "contact") {
-                    getTopScorers();
-                    getStandings();
+                    renderStandings();
+                    renderTopScorers();
                 } else if (page === "saved") {
                     getSavedTeams();
                 } else if (page === "about") {
-                    getTeams();
+                    renderTeams();
                 }
                 if (this.status == 200) {
                     content.innerHTML = xhttp.responseText;
