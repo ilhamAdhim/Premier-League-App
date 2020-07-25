@@ -15,6 +15,7 @@ var urlsToCache = [
   "/js/api.js",
   "/js/idb.js",
   "/js/db.js",
+  "js/main.js",
   "/manifest.json",
   "/iconsplash_256.png",
   "/iconsplash_512.png",
