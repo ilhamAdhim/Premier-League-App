@@ -84,46 +84,23 @@ let getMatchesByTeam = () => {
   return result;
 }
 
-function getSavedTeams() {
-  getAll().then(function (articles) {
-    console.log(articles);
-    // Menyusun komponen card artikel secara dinamis
-    var articlesHTML = "";
-    articles.forEach(function (article) {
-      var description = article.post_content.substring(0, 100);
-      articlesHTML += `
-            <div class="card">
-              <a href="./team.html?id=${article.ID}&saved=true">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img src="${article.cover}" />
-                </div>
-              </a>
-              <div class="card-content">
-                <span class="card-title truncate">${article.post_title}</span>
-                <p>${description}</p>
-              </div>
-            </div>
-          `;
-    });
-    // Sisipkan komponen card ke dalam elemen dengan id #body-content
-    document.getElementById("body-content").innerHTML = articlesHTML;
-  });
-}
+
+let getFavTeams = () => getAll();
 
 function getSavedTeamById() {
   var urlParams = new URLSearchParams(window.location.search);
   var idParam = urlParams.get("id");
 
-  getById(idParam).then(function (article) {
+  getById(idParam).then(function (team) {
     clubHTML = '';
     var clubHTML = `
     <div class="card">
       <div class="card-image waves-effect waves-block waves-light">
-        <img src="${article.cover}" />
+        <img src="${team.cover}" />
       </div>
       <div class="card-content">
-        <span class="card-title">${article.post_title}</span>
-        ${snarkdown(article.post_content)}
+        <span class="card-title">${team.team_name}</span>
+        ${snarkdown(team.post_content)}
       </div>
     </div>
   `;
@@ -136,12 +113,12 @@ function getById(id) {
   return new Promise(function (resolve, reject) {
     dbPromised
       .then(function (db) {
-        var tx = db.transaction("articles", "readonly");
-        var store = tx.objectStore("articles");
+        var tx = db.transaction("teams", "readonly");
+        var store = tx.objectStore("teams");
         return store.get(id);
       })
-      .then(function (article) {
-        resolve(article);
+      .then(function (team) {
+        resolve(team);
       });
   });
 }

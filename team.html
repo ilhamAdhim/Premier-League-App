@@ -46,7 +46,7 @@
 
   <div class="fixed-action-btn">
     <a class="btn-floating btn-large blue-feel" id="save">
-      <i class="large material-icons">save</i>
+      <i class="large material-icons yellow-text">star</i>
     </a>
   </div>
 
@@ -87,14 +87,15 @@
         // ambil artikel lalu tampilkan
         renderTeamById();
       } else {
-        var item = renderTeamById();
+        renderTeamById();
+        var item = getTeamById();
         renderPlayers();
         renderMatches();
       }
       btnSave.onclick = function () {
         console.log("Tombol FAB di klik.");
         item.then(function (article) {
-          saveForLater(article);
+          addFavorite(article);
         });
       };
     });

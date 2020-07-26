@@ -1,21 +1,21 @@
-var dbPromised = idb.open("news-reader", 1, function (upgradeDb) {
-    var articlesObjectStore = upgradeDb.createObjectStore("articles", {
-        keyPath: "ID"
+var dbPromised = idb.open("premier-league", 1, function (upgradeDb) {
+    var teamsObjectStore = upgradeDb.createObjectStore("teams", {
+        keyPath: "id", autoIncrement: true
     });
-    articlesObjectStore.createIndex("post_title", "post_title", { unique: false });
+    teamsObjectStore.createIndex("team_name", "team_name", { unique: false });
 });
 
-function saveForLater(article) {
+function addFavorite(team) {
     dbPromised
         .then(function (db) {
-            var tx = db.transaction("articles", "readwrite");
-            var store = tx.objectStore("articles");
-            console.log(article);
-            store.add(article.result);
+            var tx = db.transaction("teams", "readwrite");
+            var store = tx.objectStore("teams");
+            console.log(team);
+            store.put(team);
             return tx.complete;
         })
         .then(function () {
-            console.log("Artikel berhasil di simpan.");
+            console.log("New Favorite team added");
         });
 }
 
@@ -23,12 +23,12 @@ function getAll() {
     return new Promise(function (resolve, reject) {
         dbPromised
             .then(function (db) {
-                var tx = db.transaction("articles", "readonly");
-                var store = tx.objectStore("articles");
+                var tx = db.transaction("teams", "readonly");
+                var store = tx.objectStore("teams");
                 return store.getAll();
             })
-            .then(function (articles) {
-                resolve(articles);
+            .then(function (teams) {
+                resolve(teams);
             });
     });
 }

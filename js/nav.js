@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     renderStandings();
                     renderTopScorers();
                 } else if (page === "saved") {
-                    getSavedTeams();
+                    renderTeams();
                 } else if (page === "about") {
                     renderTeams();
                 }
