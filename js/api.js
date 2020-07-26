@@ -96,7 +96,7 @@ function getSavedTeamById() {
     var clubHTML = `
     <div class="card">
       <div class="card-image waves-effect waves-block waves-light">
-        <img src="${team.cover}" />
+        <img src="${team.cover}" alt="${team.team_name}" />
       </div>
       <div class="card-content">
         <span class="card-title">${team.team_name}</span>

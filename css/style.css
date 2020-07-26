@@ -1,9 +1,9 @@
 html,
 body {
   width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden;
 }
 
 .blue-feel {
@@ -64,11 +64,17 @@ h6 {
   height: 100px;
   width: 100px;
   padding-left: 5px;
-  transform: translate(120px, -200px);
+  transform: translate(0, -200px);
 }
 
 @media only screen and (max-width: 600px) {
   .team-preview {
-    transform: translate(100px, -200px);
+    transform: translate(0, -200px);
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .team-preview {
+    transform: translate(0, -200px);
   }
 }

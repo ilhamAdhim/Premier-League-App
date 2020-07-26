@@ -30,7 +30,7 @@ let renderStandings = () => {
             standingHTML += `
           <tr class="team-info" data-aos="fade-down" data-aos-delay ="300">
             <td style="padding:.5rem">
-              <img src="${club.team.crestUrl}" width=32 height=32 class="team-logo"/>
+              <img src="${club.team.crestUrl}" width=32 height=32 class="team-logo" alt="${club.team.name}"/>
               <span style="font-weight:bold;padding-bottom:.25rem"> ${club.team.name} </span>
             </td>
             <td>${club.playedGames}</td>
@@ -71,7 +71,7 @@ let renderTopScorers = () => {
               <div class="card">
                 <div class="row">
                   <div class="col s6 m12 l12 card-image" >
-                    <img src="${pathImagesTopScorer[rank - 1]}" width=50% class="center-align" style="height:auto">
+                    <img src="${pathImagesTopScorer[rank - 1]}" width=50% class="center-align" style="height:auto" alt="player ${rank - 1}">
                   </div>                  
                   <div class="col s6 m12 l12">
                     <div class="card-content">
@@ -112,14 +112,14 @@ let renderTeams = () => {
                 data.forEach(club => {
                     teamHTML += `
                         <div class="col s12 m6 l4" data-aos="fade-left">
-                            <div class="card small">
+                            <div class="card small center-align">
                                 <div class = "card-content grey lighten-4" style="height:100px"></div>
                                 <div class="card-content" style="height:150px">
                                     <a href="./team.html?id=${club.id}">
-                                        <div class="center-align top-space" style="font-size:1.2em;">${club.name}</div>
+                                        <div class="top-space" style="font-size:1.2em;">${club.name}</div>
                                     </a>
                                 </div>
-                                <img src="${club.crestUrl}" alt="${club.name} logo" class="team-preview"/>
+                                <img src="${club.crestUrl}" alt="${club.name} logo" class="team-preview "/>
                                 <div class="card-action right-align">
                                     <a class="waves-effect waves-light btn-small red" onclick="deleteTeamListener(${club.id})"><i class="material-icons left">delete</i>Delete</a>
                                 </div>
@@ -130,7 +130,7 @@ let renderTeams = () => {
                 // If the user hasn't added any fav team
                 : teamHTML = `<div class="container" style="height:80vh"> 
                                 <div class="center">
-                                <img src="../assets/soccer-standing.png" width=128 height-=128> <br>
+                                <img src="../assets/soccer-standing.png" width=128 alt="no-fav-team"> <br>
                                     No favorite teams added
                                 </div>
                             </div>`;
@@ -138,15 +138,16 @@ let renderTeams = () => {
             data.standings[0].table.forEach(club => {
                 teamHTML += `
                 <div class="col s12 m6 l4" data-aos="fade-left">
-                    <div class="card" style="height:300px">
-                        <div class="card-content grey lighten-4" style="height:150px"></div>
+                    <div class="card center-align" style="height:300px">
+                        <div class="card-content grey lighten-4" style="height:100px"></div>
                         <div class="card-content" style="height:150px">
                             <a href="./team.html?id=${club.team.id}">
-                                <div class="center-align top-space" style="font-size:1.2em;">${club.team.name}</div>
+                                <br>
+                                <div class="top-space" style="font-size:1.2em">${club.team.name}</div>
                             </a>
                         </div>
 
-                        <img src="${club.team.crestUrl}" alt="${club.team.name} logo" class="team-preview" />
+                        <img src="${club.team.crestUrl}" alt="${club.team.name} logo" class="team-preview " />
                     </div>
                 </div>`;
             });
@@ -164,11 +165,11 @@ let renderTeamById = () => {
     let team = getTeamById();
     team.then(data => {
         // Menyusun komponen card artikel secara dinamis
-        var teamHTML = `
-    <div class="card top-space">
-        <div class="row card-content">
-            <div class="col s12 m4 l4 center-align">
-                <img src="${data.crestUrl}" alt="${data.shortName}" width=128px height=128px/>
+        let teamHTML = `
+        <div class="card top-space">
+            <div class="row card-content">
+                <div class="col s12 m4 l4 center-align">
+                    <img src="${data.crestUrl}" alt="${data.shortName}" width=128px height=128px/>
                 </div>
             <div class="col s12 m8 l8">
                 <div class="center-align" style="padding:8px"> <b> ${data.name} </b> </div>

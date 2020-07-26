@@ -22,8 +22,8 @@
   <!-- Navigasi -->
   <nav class="blue-feel" role="navigation">
     <div class="nav-wrapper container">
-      <a href="./index.html#team" class="brand-logo" id="logo-container">Premiere League</a>
-      <a href="./index.html#team" class="sidenav-trigger" data-target="nav-mobile">
+      <a href="./index.html#participants" class="brand-logo" id="logo-container">Premiere League</a>
+      <a href="./index.html#participants" class="sidenav-trigger" data-target="nav-mobile">
         <i class="material-icons">arrow_back</i>
       </a>
       <ul class="topnav right hide-on-med-and-down"></ul>
@@ -51,13 +51,12 @@
   </div>
 
   <!-- Akhir isi konten -->
-  <script type="text/javascript" src="https://unpkg.com/snarkdown@1.0.2/dist/snarkdown.umd.js"></script>
-  <script src="js/materialize.min.js"></script>
+  <script defer src="js/materialize.min.js"></script>
   <script src="https://unpkg.com/aos@next/dist/aos.js"> </script>
-  <script src="js/api.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/idb.js"></script>
-  <script src="js/db.js"></script>
+  <script defer src="js/api.js"></script>
+  <script defer src="js/main.js"></script>
+  <script defer src="js/idb.js"></script>
+  <script defer src="js/db.js"></script>
   <script>
     AOS.init()
     // REGISTER SERVICE WORKER
@@ -94,9 +93,9 @@
       }
       btnSave.onclick = function () {
         console.log("Tombol FAB di klik.");
-        M.toast({ html: 'Team has been added to favorite!' });
-        item.then(function (article) {
-          addFavorite(article);
+        M.toast({ html: `New team has been added to favorite !` });
+        item.then(function (team) {
+          addFavorite(team);
         });
       };
     });

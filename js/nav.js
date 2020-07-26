@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     content.innerHTML = `
                     <div class="container" style="height:80vh"> 
                         <div class="center">
-                        <img src="../assets/offline.png"> <br>
+                        <img src="../assets/offline.png" alt="offline logo"> <br>
                             Anda sedang offline
                         </div>
                     </div>`;
