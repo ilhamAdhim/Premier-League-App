@@ -22,8 +22,8 @@
   <!-- Navigasi -->
   <nav class="blue-feel" role="navigation">
     <div class="nav-wrapper container">
-      <a href="./index.html#about" class="brand-logo" id="logo-container">Premiere League</a>
-      <a href="./index.html#about" class="sidenav-trigger" data-target="nav-mobile">
+      <a href="./index.html#team" class="brand-logo" id="logo-container">Premiere League</a>
+      <a href="./index.html#team" class="sidenav-trigger" data-target="nav-mobile">
         <i class="material-icons">arrow_back</i>
       </a>
       <ul class="topnav right hide-on-med-and-down"></ul>
@@ -94,11 +94,15 @@
       }
       btnSave.onclick = function () {
         console.log("Tombol FAB di klik.");
+        M.toast({ html: 'Team has been added to favorite!' });
         item.then(function (article) {
           addFavorite(article);
         });
       };
     });
+
+
+
   </script>
 
 </body>

@@ -1,32 +1,12 @@
 let pathImagesTopScorer = ["../assets/first-top-scorer.png", "../assets/second-top-scorer.png", "../assets/third-top-scorer.png"]
 
-let showLoader = () => {
-    let html =
-        `<div class="preloader-wrapper medium active">
-            <div class="spinner-layer spinner-green-only">
-                <div class="circle-clipper left">
-                <div class="circle"></div>
-                </div><div class="gap-patch">
-                <div class="circle"></div>
-                </div><div class="circle-clipper right">
-                <div class="circle"></div>
-                </div>
-            </div>
-        </div>`
-    document.getElementById("loader").innerHTML = html;
-}
-
-let hideLoader = () => {
-    document.getElementById("loader").innerHTML = '';
-}
 
 let renderStandings = () => {
     showLoader();
-
     let standings = getStandings();
     standings.then(data => {
         let tableStanding =
-            `<table class="responsive-table highlight">
+            `<table class="responsive-table highlight" >
             <thead>
                 <tr>
                     <th>Team</th>
@@ -40,7 +20,6 @@ let renderStandings = () => {
                     <th>Points</th>
                 </tr>
             </thead>
-
             <tbody id="data-standing">
             </tbody>
         </table>`;
@@ -70,12 +49,12 @@ let renderStandings = () => {
         document.getElementById("standings").innerHTML = tableStanding;
         document.getElementById("data-standing").innerHTML = standingHTML;
     });
-
     hideLoader();
 }
 
 let renderTopScorers = () => {
     showLoader();
+
     let scorersHTML = "";
     let duration = 0;
     let rank = 0;
@@ -113,14 +92,12 @@ let renderTopScorers = () => {
         });
         // Sisipkan komponen card ke dalam elemen dengan id #top-scorers
         document.getElementById("top-scorers").innerHTML = scorersHTML;
-    })
-
+    });
     hideLoader();
 }
 
 let renderTeams = () => {
     showLoader();
-
     var page = window.location.hash.substr(1);
     let teams = page === 'saved' ? getFavTeams() : getStandings();
     teams.then(data => {
@@ -129,22 +106,25 @@ let renderTeams = () => {
         console.log(data);
 
         if (page === 'saved') {
+            teamHTML = `<h3> My Favorite Teams </h3>`;
             // If the user added any favorite team
             data.length > 0 ?
                 data.forEach(club => {
                     teamHTML += `
-                <div class="col s12 m6 l4" data-aos="fade-left">
-                    <div class="card" style="height:300px">
-                        <div class = "card-content grey lighten-4" style="height:150px"></div>
-                        <div class="card-content" style="height:150px">
-                            <a href="./team.html?id=${club.id}">
-                                <div class="center-align top-space" style="font-size:1.2em;">${club.name}</div>
-                            </a>
+                        <div class="col s12 m6 l4" data-aos="fade-left">
+                            <div class="card small">
+                                <div class = "card-content grey lighten-4" style="height:100px"></div>
+                                <div class="card-content" style="height:150px">
+                                    <a href="./team.html?id=${club.id}">
+                                        <div class="center-align top-space" style="font-size:1.2em;">${club.name}</div>
+                                    </a>
+                                </div>
+                                <img src="${club.crestUrl}" alt="${club.name} logo" class="team-preview"/>
+                                <div class="card-action right-align">
+                                    <a class="waves-effect waves-light btn-small red" onclick="deleteTeamListener(${club.id})"><i class="material-icons left">delete</i>Delete</a>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <img src="${club.crestUrl}" alt="${club.name} logo" class="team-preview"/>
-                    </div>
-                </div>
                     `;
                 })
                 // If the user hasn't added any fav team
@@ -171,10 +151,8 @@ let renderTeams = () => {
                 </div>`;
             });
         }
-
         // Sisipkan komponen card ke dalam elemen dengan id #content
         document.getElementById("team-list").innerHTML = teamHTML;
-
     })
 
     hideLoader();
@@ -182,6 +160,7 @@ let renderTeams = () => {
 
 let renderTeamById = () => {
     showLoader();
+
     let team = getTeamById();
     team.then(data => {
         // Menyusun komponen card artikel secara dinamis
@@ -204,7 +183,7 @@ let renderTeamById = () => {
         `;
         // Sisipkan komponen card ke dalam elemen dengan id #content
         document.getElementById("body-content").innerHTML = teamHTML;
-    })
+    });
     hideLoader();
 }
 
@@ -242,6 +221,7 @@ let renderPlayers = () => {
 
 let renderMatches = () => {
     showLoader();
+
     let matchesPerTeam = getMatchesByTeam();
     matchesPerTeam.then(response => {
         let matchHTML;
@@ -265,5 +245,13 @@ let renderMatches = () => {
         });
         // Sisipkan komponen card ke dalam elemen dengan id #next-match-list
         document.getElementById("next-match-list").innerHTML = matchHTML;
-    }); hideLoader();
+    });
+    hideLoader();
+}
+
+var deleteTeamListener = teamId => {
+    var c = confirm("Delete this team?")
+    if (c == true) {
+        deleteTeam(teamId);
+    }
 }

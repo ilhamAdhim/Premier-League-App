@@ -7,7 +7,7 @@ var topScorersURL = `${base_url}competitions/PL/scorers?limit=3`
 
 // All request in one function with dynamic url
 let fetchApi = url => {
-  return fetch(url, {
+  let responseAPI = fetch(url, {
     headers: {
       'X-Auth-Token': API_KEY
     }
@@ -15,10 +15,12 @@ let fetchApi = url => {
     .then(status)
     .then(json)
     .catch(err => Promise.reject(err));
+  return responseAPI;
 }
 
 let cacheAPI = url => caches.match(url).then(response => {
-  return response === undefined ? 'Caching' : response.json();
+  let responseCache = response === undefined ? 'Caching' : response.json();
+  return responseCache;
 });
 
 // Blok kode yang akan di panggil jika fetch berhasil
@@ -48,13 +50,12 @@ let getStandings = () => {
   let result;
 
   if ("caches" in window) result = cacheAPI(standingsURL);
-  result = fetchApi(standingsURL)
+  result = fetchApi(standingsURL);
   return result;
 }
 
 let getTopScorers = () => {
   let result;
-
   if ("caches" in window) result = cacheAPI(topScorersURL);
   result = fetchApi(topScorersURL);
   return result;
@@ -65,7 +66,6 @@ let getTeamById = () => {
     // Ambil nilai query parameter (?id=)
     let urlParams = new URLSearchParams(window.location.search);
     let idParam = urlParams.get("id");
-
     let dataTeam;
 
     if ("caches" in window) result = cacheAPI(`${base_url}teams/${idParam}`);
@@ -121,4 +121,30 @@ function getById(id) {
         resolve(team);
       });
   });
+}
+
+
+let showLoader = () => {
+  let html =
+    `
+    <div class="container" style="height:80vh"> 
+        <div class="center">
+          <div class="preloader-wrapper medium active">
+            <div class="spinner-layer spinner-green-only">
+                <div class="circle-clipper left">
+                <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                <div class="circle"></div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>`
+  document.getElementById("loader").innerHTML = html;
+}
+
+let hideLoader = () => {
+  document.getElementById("loader").innerHTML = '';
 }
