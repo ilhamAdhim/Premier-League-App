@@ -14,12 +14,13 @@ let fetchApi = url => {
   })
     .then(status)
     .then(json)
-    .catch(err => Promise.reject(err));
+    .catch("test");
   return responseAPI;
 }
 
 let cacheAPI = url => caches.match(url).then(response => {
   let responseCache = response === undefined ? 'Caching' : response.json();
+  console.log("from cache")
   return responseCache;
 });
 
@@ -56,7 +57,7 @@ let getStandings = () => {
 
 let getTopScorers = () => {
   let result;
-  if ("caches" in window) result = cacheAPI(topScorersURL);
+  if ("caches" in window) return cacheAPI(topScorersURL);
   result = fetchApi(topScorersURL);
   return result;
 }
@@ -68,7 +69,7 @@ let getTeamById = () => {
     let idParam = urlParams.get("id");
     let dataTeam;
 
-    if ("caches" in window) result = cacheAPI(`${base_url}teams/${idParam}`);
+    if ("caches" in window) dataTeam = cacheAPI(`${base_url}teams/${idParam}`);
     dataTeam = fetchApi(`${base_url}teams/${idParam}`);
     resolve(dataTeam);
   });
@@ -79,7 +80,7 @@ let getMatchesByTeam = () => {
   let urlParams = new URLSearchParams(window.location.search);
   let idParam = urlParams.get("id");
 
-  if ("caches" in window) result = cacheAPI(`${base_url}teams/${idParam}/matches/?status=SCHEDULED`);
+  if ("caches" in window) return cacheAPI(`${base_url}teams/${idParam}/matches/?status=SCHEDULED`);
   result = fetchApi(`${base_url}teams/${idParam}/matches/?status=SCHEDULED`);
   return result;
 }

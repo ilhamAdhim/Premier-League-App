@@ -182,21 +182,20 @@ let renderTeamById = () => {
     team.then(data => {
         // Menyusun komponen card artikel secara dinamis
         let teamHTML = `
-                        < div class="card top-space" >
-                            <div class="row card-content">
-                                <div class="col s12 m4 l4 center-align">
-                                    <img src="${data.crestUrl}" alt="${data.shortName}" width=128px height=128px/>
-                    <div class="center-align" style="padding:8px"> <b> ${data.name} </b> </div>
-                                </div>
-                                <div class="col s12 m8 l8">
-                                    <i class="material-icons" style="font-size:.8rem"> sports_soccer </i>  ${data.venue} <br><br>
-                                        <i class="material-icons" style="font-size:.8rem"> location_on </i>  ${data.address}  <br><br>
-                                            <i class="material-icons" style="font-size:.8rem"> phone </i> ${data.phone !== null ? data.phone : 'No contact'}  <br><br>
-                                                <b> Official Website : </b> <a href="${data.website}"> ${data.website}  </a> 
+            <div class="card top-space">
+                <div class="row card-content">
+                    <div class="col s12 m4 l4 center-align">
+                        <img src="${data.crestUrl}" alt="${data.shortName}" width=128px height=128px/>
+                        <div class="center-align" style="padding:8px"> <b> ${data.name} </b> </div>
+                    </div>
+                    <div class="col s12 m8 l8">
+                        <i class="material-icons" style="font-size:.8rem"> sports_soccer </i>  ${data.venue} <br><br>
+                        <i class="material-icons" style="font-size:.8rem"> location_on </i>  ${data.address}  <br><br>
+                        <i class="material-icons" style="font-size:.8rem"> phone </i> ${data.phone !== null ? data.phone : 'No contact'}  <br><br>
+                        <b> Official Website : </b> <a href="${data.website}"> ${data.website}  </a> 
                     </div>
                 </div>
-            </>
-        </div>
+            </div>
         `;
         // Sisipkan komponen card ke dalam elemen dengan id #content
         document.getElementById("body-content").innerHTML = teamHTML;
@@ -242,24 +241,35 @@ let renderMatches = () => {
     let matchesPerTeam = getMatchesByTeam();
     matchesPerTeam.then(response => {
         let matchHTML;
-        response.matches.forEach((data) => {
-            console.log(data);
-            matchHTML +=
-                `<div class="container">
-                                            <div class="row card">
-                                                <div class="card-content center-align">
-                                                    <div class="col s5"> ${data.homeTeam.name} </div>
-                                                    <div class="col s1" style="padding:0"> VS </div>
-                                                    <div class="col s5"> ${data.awayTeam.name} </div>
-                                                </div>
-                                                <div class="card-content right-align">
-                                                    <!-- Only get the date -->
+        response.matches.length !== 0 ?
+            response.matches.forEach((data) => {
+                console.log(data);
+                matchHTML +=
+                    `<div class="container">
+                    <div class="row card">
+                        <div class="card-content center-align">
+                            <div class="col s5"> ${data.homeTeam.name} </div>
+                            <div class="col s1" style="padding:0"> VS </div>
+                            <div class="col s5"> ${data.awayTeam.name} </div>
+                        </div>
+                        <div class="card-content right-align">
+                            <!-- Only get the date -->
                             ${data.utcDate.substr(0, 10)}
-                                                </div>
-                                            </div>
-                                        </div>
+                        </div>
+                    </div>
+                </div>
             `
-        });
+            }) :
+
+            matchHTML =
+            `<div class="container">
+                <div class="row card">
+                    <div class="card-content center-align">
+                        Not scheduled yet
+                    </div>
+                </div>
+            </div>`;
+
         // Sisipkan komponen card ke dalam elemen dengan id #next-match-list
         document.getElementById("next-match-list").innerHTML = matchHTML;
     });
