@@ -104,41 +104,8 @@ let renderTeams = () => {
         let delayAnimation = 200;
         console.log(data);
 
-        if (page === 'saved') {
-            teamHTML = `<h3> My Favorite Teams </h3>`;
-
-            // If the user added any favorite team
-            data.length > 0 ?
-                data.forEach(club => {
-                    teamHTML += `
-
-                    <div class="col s12 m6 l4" data-aos="fade-left">
-                        <div class="card small team-card center-align">
-                            <a href="./team.html?id=${club.id}" class="waves-effect waves-light">
-                            <div class = "card-image" style="height:150px">
-                                <img src="../assets/${club.name}-stadium.jpg" alt="${club.name}-stadium" height=150> 
-                            </div>
-                            <div class="card-content grey lighten-4" style="height:150px;">
-                                <br>
-                                <div class="team-name" style="font-size:1.2em;color:black">${club.name}</div>
-                            </div>                    
-                                <img src="${club.crestUrl}" alt="${club.name} logo" class="team-preview" />
-                            </a>
-                            <div class="card-action right-align">
-                                <a class="waves-effect waves-light btn-small red" onclick="deleteTeamListener(${club.id})"><i class="material-icons left">delete</i>Delete</a>
-                            </div>
-                        </div>
-                    </div>`;
-
-                })
-                // If the user hasn't added any fav team
-                : teamHTML = `< div class="container" style = "height:80vh" >
-                        <div class="center">
-                            <img src="../assets/soccer-standing.png" width=128 alt="no-fav-team"> <br>
-                                No favorite teams added
-                                </div>
-                        </>`;
-        } else {
+        if (page === 'saved') teamHTML = renderSavedTeams(data);
+        else {
             // Sort Team name alphabetically
             data.standings[0].table.sort((a, b) => {
                 var nameA = a.team.name.toLowerCase(), nameB = b.team.name.toLowerCase()
@@ -168,11 +135,54 @@ let renderTeams = () => {
                         </div>`;
             });
         }
-        // Sisipkan komponen card ke dalam elemen dengan id #content
+        // Sisipkan komponen card ke dalam elemen dengan id #team-list
         document.getElementById("team-list").innerHTML = teamHTML;
     })
 
     hideLoader();
+}
+
+let renderSavedTeams = (data) => {
+    let teamHTML;
+    teamHTML = `<h3> My Favorite Teams </h3>`;
+    // If the user added any favorite team
+    data.length > 0 ?
+        data.forEach(club => {
+            teamHTML += `
+                <div class="col s12 m6 l4" data-aos="fade-left">
+                    <div class="card small team-card center-align">
+                        <a href="./team.html?id=${club.id}" class="waves-effect waves-light">
+                        <div class = "card-image" style="height:150px">
+                            <img src="../assets/${club.name}-stadium.jpg" alt="${club.name}-stadium" height=150> 
+                        </div>
+                        <div class="card-content grey lighten-4" style="height:150px;">
+                            <br>
+                            <div class="team-name" style="font-size:1.2em;color:black">${club.name}</div>
+                        </div>                    
+                            <img src="${club.crestUrl}" alt="${club.name} logo" class="team-preview" />
+                        </a>
+                        <div class="card-action right-align">
+                            <a class="waves-effect waves-light btn-small red" onclick="deleteTeamListener(${club.id})"><i class="material-icons left">delete</i>Delete</a>
+                        </div>
+                    </div>
+                </div>`;
+        })
+        // If the user hasn't added any fav team
+        : teamHTML =
+        `<div class="container" style = "height:80vh">
+            <div class="center">
+                <img src="../assets/soccer-standing.png" width=128 alt="no-fav-team"> <br>
+                No favorite teams added
+            </div>
+        </div>`;
+
+    // Responsive with js
+    /* if (data.length <= 3) {
+        let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        if (width > 1000) document.querySelector("#team-list").style.height = '75vh';
+    }; */
+
+    return teamHTML;
 }
 
 let renderTeamById = () => {
@@ -239,37 +249,35 @@ let renderMatches = () => {
     showLoader();
 
     let matchesPerTeam = getMatchesByTeam();
+    console.log(matchesPerTeam);
     matchesPerTeam.then(response => {
         let matchHTML;
-        response.matches.length !== 0 ?
-            response.matches.forEach((data) => {
-                console.log(data);
-                matchHTML +=
-                    `<div class="container">
-                    <div class="row card">
-                        <div class="card-content center-align">
-                            <div class="col s5"> ${data.homeTeam.name} </div>
-                            <div class="col s1" style="padding:0"> VS </div>
-                            <div class="col s5"> ${data.awayTeam.name} </div>
-                        </div>
-                        <div class="card-content right-align">
-                            <!-- Only get the date -->
-                            ${data.utcDate.substr(0, 10)}
-                        </div>
-                    </div>
-                </div>
-            `
-            }) :
-
-            matchHTML =
-            `<div class="container">
+        response.matches === undefined || response.matches.length < 1 ?
+            matchHTML = `
+            <div class="container">
                 <div class="row card">
                     <div class="card-content center-align">
                         Not scheduled yet
                     </div>
                 </div>
-            </div>`;
-
+            </div>`
+            :
+            response.matches.forEach((data) => {
+                matchHTML +=
+                    `<div class="container">
+                        <div class="row card">
+                            <div class="card-content center-align">
+                                <div class="col s5"> ${data.homeTeam.name} </div>
+                                <div class="col s1" style="padding:0"> VS </div>
+                                <div class="col s5"> ${data.awayTeam.name} </div>
+                            </div>
+                            <div class="card-content right-align">
+                                <!-- Only get the date -->
+                                ${data.utcDate.substr(0, 10)}
+                            </div>
+                        </div>
+                    </div>`
+            });
         // Sisipkan komponen card ke dalam elemen dengan id #next-match-list
         document.getElementById("next-match-list").innerHTML = matchHTML;
     });

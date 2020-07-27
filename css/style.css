@@ -81,6 +81,12 @@ h6 {
   }
 }
 
+@media only screen and (min-width: 993px) {
+  .saved-team {
+    height: 75vh;
+  }
+}
+
 .team-name {
   font-weight: 500;
 }

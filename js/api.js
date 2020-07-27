@@ -20,7 +20,6 @@ let fetchApi = url => {
 
 let cacheAPI = url => caches.match(url).then(response => {
   let responseCache = response === undefined ? 'Caching' : response.json();
-  console.log("from cache")
   return responseCache;
 });
 
