@@ -98,7 +98,7 @@ let renderTopScorers = () => {
 
 let renderTeams = () => {
     showLoader();
-    var page = window.location.hash.substr(1);
+    let page = window.location.hash.substr(1);
     let teams = page === 'saved' ? getFavTeams() : getStandings();
     teams.then(data => {
         let teamHTML = "";
@@ -109,7 +109,7 @@ let renderTeams = () => {
         else {
             // Sort Team name alphabetically
             data.standings[0].table.sort((a, b) => {
-                var nameA = a.team.name.toLowerCase(), nameB = b.team.name.toLowerCase()
+                let nameA = a.team.name.toLowerCase(), nameB = b.team.name.toLowerCase()
                 if (nameA < nameB) //sort string ascending
                     return -1
                 if (nameA > nameB)
@@ -216,8 +216,8 @@ let renderTeamById = () => {
                 </div>
             </div>
         `;
-        // Sisipkan komponen card ke dalam elemen dengan id #content
-        document.getElementById("body-content").innerHTML = teamHTML;
+        // Sisipkan komponen card ke dalam elemen dengan id #profile
+        document.getElementById("profile").innerHTML = teamHTML;
     });
     hideLoader();
 }
@@ -228,7 +228,10 @@ let renderPlayers = () => {
     let players = getTeamById();
     players.then(data => {
         // Menyusun komponen card artikel secara dinamis
-        var playerHTML = "";
+        let playerHTML = `
+        <hr>
+        <h4> Players </h4>
+        `;
         let delayAnimation = 200;
         data.squad.forEach(function (player) {
             playerHTML += player.position !== null && player.nationality.length < 8 ?
@@ -260,9 +263,12 @@ let renderMatches = () => {
     let matchesPerTeam = getMatchesByTeam();
     console.log(matchesPerTeam);
     matchesPerTeam.then(response => {
-        let matchHTML;
+        let matchHTML = `
+        <hr>
+        <h4> Next Match</h4>
+        `;
         response.matches === undefined || response.matches.length < 1 ?
-            matchHTML = `
+            matchHTML += `
             <div class="container">
                 <div class="row card">
                     <div class="card-content center-align">
@@ -306,7 +312,7 @@ let addTeamListener = (item) => {
 
 let deleteTeamListener = teamId => {
     let teamName = document.querySelector('.team-name').innerText;
-    var c = confirm("Delete this team?");
+    let c = confirm("Delete this team?");
     if (c == true) {
         deleteTeam(teamId);
         showNotifDeletedTeam(teamName);

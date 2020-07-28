@@ -8,7 +8,6 @@ var urlsToCache = [
   "/index.html",
   "/pages/home.html",
   "/pages/saved.html",
-  "/pages/leaderboard.html",
   "/pages/participants.html",
 
   // Javascripts
@@ -32,7 +31,7 @@ var urlsToCache = [
   "/manifest.json",
 
   // Assets
-  "assets/offline.png",
+  "assets/soccer-standing.png",
   "/iconsplash_512.png",
   "/iconsplash_256.png",
   "../assets/AFC Bournemouth-stadium.jpg",
@@ -55,7 +54,6 @@ var urlsToCache = [
   "../assets/Watford FC-stadium.jpg",
   "../assets/West Ham United FC-stadium.jpg",
   "../assets/Wolverhampton Wanderers FC-stadium.jpg",
-  "../assets/offline.png",
 ];
 
 self.addEventListener("install", function (event) {

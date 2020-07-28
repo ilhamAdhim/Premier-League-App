@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4) {
                 var content = document.querySelector("#body-content");
-                if (page === "leaderboard") {
+                if (page === "Home") {
                     renderStandings();
                     renderTopScorers();
                 } else if (page === "saved") {
@@ -67,8 +67,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     content.innerHTML = `
                     <div class="container" style="height:80vh"> 
                         <div class="center">
-                        <img src="../assets/offline.png" alt="offline logo"> <br>
-                            Anda sedang offline
+                        <img src="../assets/soccer-standing.png" alt="offline logo"> <br>
+                            You are offline
                         </div>
                     </div>`;
                 }
