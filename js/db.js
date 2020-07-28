@@ -27,7 +27,6 @@ var deleteTeam = teamId => {
         return tx.complete;
     }).then(() => {
         M.toast({ html: 'Team has been deleted!' });
-        renderTeams();
     }).catch(err => {
         console.error('Error: ', err);
     });

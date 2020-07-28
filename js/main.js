@@ -118,7 +118,7 @@ let renderTeams = () => {
 
             data.standings[0].table.forEach(club => {
                 teamHTML += `
-                        <div class="col s12 m6 l4" data - aos="fade-left" >
+                        <div class="col s12 m6 l4" data-aos="fade-left">
                             <div class="card team-card center-align" style="height:300px">
                                 <a href="./team.html?id=${club.team.id}" class="waves-effect waves-light">
                                 <div class="card-image" style="height:150px">
@@ -177,11 +177,19 @@ let renderSavedTeams = (data) => {
         </div>`;
 
     // Responsive with js
-    /* if (data.length <= 3) {
-        let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-        if (width > 1000) document.querySelector("#team-list").style.height = '75vh';
-    }; */
+    /*  if (data.length <= 3) {
+         let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+         if (width > 1000) document.querySelector("#team-list").style.height = '75vh';
+         else document.querySelector("#team-list").style.height = '100%';
+     };*/
 
+    let width;
+    if (data.length > 3) {
+        let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        if (width > 1000) document.querySelector("#team-list").style.height = 'auto';
+    } else {
+        if (width > 1000) document.querySelector("#team-list").style.height = '75vh';
+    }
     return teamHTML;
 }
 
@@ -196,7 +204,7 @@ let renderTeamById = () => {
                 <div class="row card-content">
                     <div class="col s12 m4 l4 center-align">
                         <img src="${data.crestUrl}" alt="${data.shortName}" width=128px height=128px/>
-                        <div class="center-align" style="padding:8px"> <b> ${data.name} </b> </div>
+                        <div class="center-align" id="team-name" style="padding:8px"> <b> ${data.name} </b> </div>
                     </div>
                     <div class="col s12 m8 l8">
                         <i class="material-icons" style="font-size:.8rem"> sports_soccer </i>  ${data.venue} <br><br>
@@ -284,9 +292,60 @@ let renderMatches = () => {
     hideLoader();
 }
 
-var deleteTeamListener = teamId => {
-    var c = confirm("Delete this team?")
+let addTeamListener = (item) => {
+
+    let teamName = document.querySelector("#team-name").innerText
+    showNotifAddedTeam(teamName);
+    M.toast({ html: `New team has been added to favorite !` });
+    item.then(function (team) {
+        addFavorite(team);
+    });
+
+}
+
+let deleteTeamListener = teamId => {
+    let teamName = document.querySelector('.team-name').innerText;
+    var c = confirm("Delete this team?");
     if (c == true) {
         deleteTeam(teamId);
+        showNotifDeletedTeam(teamName);
+        renderTeams();
+    }
+}
+
+let showNotifDeletedTeam = teamName => {
+    const title = `Deleted ${teamName}`;
+    const options = {
+        'body': `You will not receive any update on ${teamName} anymore`,
+        'icon': './iconsplash_256.png',
+        'badge': './iconsplash_256.png',
+        'tag': 'message-group-2',
+        requireInteraction: true
+    };
+    if (Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then(function (registration) {
+            registration.showNotification(title, options);
+        });
+    } else {
+        console.error('Fitur notifikasi tidak diijinkan.');
+    }
+}
+
+
+function showNotifAddedTeam(team) {
+    const title = `Favorited ${team}`;
+    const options = {
+        'body': `Updates on ${team} will be delivered to you :)`,
+        'icon': './iconsplash_256.png',
+        'badge': './iconsplash_256.png',
+        'tag': 'message-group-1',
+        requireInteraction: true
+    };
+    if (Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then(function (registration) {
+            registration.showNotification(title, options);
+        });
+    } else {
+        console.error('Fitur notifikasi tidak diijinkan.');
     }
 }

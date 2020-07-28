@@ -28,7 +28,14 @@ let status = response => {
   if (response.status !== 200) {
     console.log("Error : " + response.status);
     // Method reject() akan membuat blok catch terpanggil
-    return Promise.reject(new Error(response.statusText));
+    return Promise.reject(() => {
+      document.querySelector("#body-content").innerHTML =
+        `
+        <div class="container">
+          Failed
+        </div>
+      `
+    });
   } else {
     // Mengubah suatu objek menjadi Promise agar bisa "di-then-kan"
     return Promise.resolve(response);

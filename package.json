@@ -1,0 +1,22 @@
+{
+  "name": "premier-league",
+  "version": "1.0.0",
+  "description": "Premier League App",
+  "main": "service-worker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilhamAdhim/premier-league-soccer.git"
+  },
+  "author": "ilhamm179",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ilhamAdhim/premier-league-soccer/issues"
+  },
+  "homepage": "https://github.com/ilhamAdhim/premier-league-soccer#readme",
+  "dependencies": {
+    "web-push": "^3.4.4"
+  }
+}

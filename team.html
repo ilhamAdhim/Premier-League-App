@@ -44,11 +44,6 @@
     <div class="row" id="player-list"></div>
   </div>
 
-  <div class="fixed-action-btn">
-    <a class="btn-floating btn-large blue-feel" id="save">
-      <i class="large material-icons yellow-text">star</i>
-    </a>
-  </div>
 
   <!-- Akhir isi konten -->
   <script defer src="js/materialize.min.js"></script>
@@ -87,21 +82,21 @@
         renderTeamById();
       } else {
         renderTeamById();
-        var item = getTeamById();
         renderPlayers();
         renderMatches();
       }
-      btnSave.onclick = function () {
-        console.log("Tombol FAB di klik.");
-        M.toast({ html: `New team has been added to favorite !` });
-        item.then(function (team) {
-          addFavorite(team);
-        });
-      };
+
     });
 
   </script>
 
+
+
+  <div class="fixed-action-btn">
+    <a class="btn-floating btn-large blue-feel" id="save" onclick="addTeamListener(getTeamById())">
+      <i class="large material-icons yellow-text">star</i>
+    </a>
+  </div>
 </body>
 
 
