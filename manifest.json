@@ -10,14 +10,12 @@
     {
       "src": "iconsplash_512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
       "src": "iconsplash_256.png",
       "sizes": "256x256",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ],
   "gcm_sender_id": "225946820105"

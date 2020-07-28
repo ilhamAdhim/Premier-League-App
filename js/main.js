@@ -59,9 +59,10 @@ let renderTopScorers = () => {
     let rank = 0;
 
     let scorers = getTopScorers();
-
     scorers.then(raw => {
+        console.log(raw);
         raw.scorers.forEach(function (data) {
+
             rank++;
             duration += 200;
 

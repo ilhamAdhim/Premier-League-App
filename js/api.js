@@ -63,7 +63,8 @@ let getStandings = () => {
 
 let getTopScorers = () => {
   let result;
-  if ("caches" in window) return cacheAPI(topScorersURL);
+
+  if ("caches" in window) result = cacheAPI(topScorersURL);
   result = fetchApi(topScorersURL);
   return result;
 }
