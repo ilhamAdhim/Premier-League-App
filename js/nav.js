@@ -45,12 +45,10 @@ document.addEventListener("DOMContentLoaded", function () {
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4) {
                 var content = document.querySelector("#body-content");
-                if (page === "Home") {
-                    renderStandings();
+                if (page === "home") {
                     renderTopScorers();
-                } else if (page === "saved") {
-                    renderTeams();
-                } else if (page === "participants") {
+                    renderStandings();
+                } else if (page === "saved" || page === "participants") {
                     renderTeams();
                 }
                 if (this.status == 200) {

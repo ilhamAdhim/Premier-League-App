@@ -14,7 +14,6 @@ let fetchApi = url => {
   })
     .then(status)
     .then(json)
-    .catch("test");
   return responseAPI;
 }
 
@@ -54,19 +53,15 @@ let error = error => {
 }
 
 let getStandings = () => {
-  let result;
-
-  if ("caches" in window) result = cacheAPI(standingsURL);
-  result = fetchApi(standingsURL);
-  return result;
+  return fetchApi(standingsURL).catch(() => {
+    return cacheAPI(standingsURL);
+  });
 }
 
 let getTopScorers = () => {
-  let result;
-
-  if ("caches" in window) result = cacheAPI(topScorersURL);
-  result = fetchApi(topScorersURL);
-  return result;
+  return fetchApi(topScorersURL).catch(() => {
+    return cacheAPI(topScorersURL);
+  });
 }
 
 let getTeamById = () => {
@@ -76,20 +71,19 @@ let getTeamById = () => {
     let idParam = urlParams.get("id");
     let dataTeam;
 
-    if ("caches" in window) dataTeam = cacheAPI(`${base_url}teams/${idParam}`);
-    dataTeam = fetchApi(`${base_url}teams/${idParam}`);
-    resolve(dataTeam);
+    resolve(fetchApi(`${base_url}teams/${idParam}`).catch(() => {
+      return cacheAPI(`${base_url}teams/${idParam}`);
+    }));
   });
 }
 
 let getMatchesByTeam = () => {
-  let result;
   let urlParams = new URLSearchParams(window.location.search);
   let idParam = urlParams.get("id");
 
-  if ("caches" in window) return cacheAPI(`${base_url}teams/${idParam}/matches/?status=SCHEDULED`);
-  result = fetchApi(`${base_url}teams/${idParam}/matches/?status=SCHEDULED`);
-  return result;
+  return fetchApi(`${base_url}teams/${idParam}/matches/?status=SCHEDULED`).catch(() => {
+    return cacheAPI(`${base_url}teams/${idParam}/matches/?status=SCHEDULED`);
+  });
 }
 
 
@@ -99,19 +93,23 @@ function getSavedTeamById() {
   var urlParams = new URLSearchParams(window.location.search);
   var idParam = urlParams.get("id");
 
-  getById(idParam).then(function (team) {
-    clubHTML = '';
-    var clubHTML = `
-    <div class="card">
-      <div class="card-image waves-effect waves-block waves-light">
-        <img src="${team.cover}" alt="${team.team_name}" />
+  getById(idParam).then((team) => {
+    clubHTML = `
+    <div class="card top-space">
+      <div class="row card-content">
+          <div class="col s12 m4 l4 center-align">
+              <img src="${data.crestUrl}" alt="${data.shortName}" width=128px height=128px/>
+              <div class="center-align" id="team-name" style="padding:8px"> <b> ${data.name} </b> </div>
+          </div>
+          <div class="col s12 m8 l8">
+              <i class="material-icons" style="font-size:.8rem"> sports_soccer </i>  ${data.venue} <br><br>
+              <i class="material-icons" style="font-size:.8rem"> location_on </i>  ${data.address}  <br><br>
+              <i class="material-icons" style="font-size:.8rem"> phone </i> ${data.phone !== null ? data.phone : 'No contact'}  <br><br>
+              <b> Official Website : </b> <a href="${data.website}"> ${data.website}  </a> 
+          </div>
       </div>
-      <div class="card-content">
-        <span class="card-title">${team.team_name}</span>
-        ${snarkdown(team.post_content)}
-      </div>
-    </div>
-  `;
+    </div>`;
+
     // Sisipkan komponen card ke dalam elemen dengan id #content
     document.getElementById("body-content").innerHTML = clubHTML;
   });

@@ -75,13 +75,11 @@
         btnSave.style.display = 'none';
 
         // ambil artikel lalu tampilkan
-        renderTeamById();
-      } else {
-        renderTeamById();
-        renderPlayers();
-        renderMatches();
+        renderSavedTeamById();
       }
-
+      renderTeamById();
+      renderPlayers();
+      renderMatches();
     });
 
   </script>
