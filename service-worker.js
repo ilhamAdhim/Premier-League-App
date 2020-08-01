@@ -54,6 +54,9 @@ var urlsToCache = [
   "../assets/Watford FC-stadium.jpg",
   "../assets/West Ham United FC-stadium.jpg",
   "../assets/Wolverhampton Wanderers FC-stadium.jpg",
+  "../assets/first-top-scorer.png",
+  "../assets/second-top-scorer.png",
+  "../assets/third-top-scorer.png"
 ];
 
 self.addEventListener("install", function (event) {
