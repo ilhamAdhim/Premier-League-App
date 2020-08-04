@@ -154,7 +154,7 @@ let renderSavedTeams = (data) => {
                     <div class="card small team-card center-align">
                         <a href="./team.html?id=${club.id}" class="waves-effect waves-light">
                         <div class = "card-image" style="height:150px">
-                            <img src="../assets/${club.name}-stadium.jpg" alt="${club.name}-stadium" height=150> 
+                            <img src="./assets/${club.name}-stadium.jpg" alt="${club.name}-stadium" height=150> 
                         </div>
                         <div class="card-content grey lighten-4" style="height:150px;">
                             <br>

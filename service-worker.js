@@ -9,35 +9,33 @@ const CACHE_NAME = "premier-league-soccer";
 const base_url = "https://api.football-data.org/v2/";
 
 workbox.precaching.precacheAndRoute([
-  '/',
-
   // HTML
-  '/nav.html',
-  '/team.html',
-  '/index.html',
-  '/pages/home.html',
-  '/pages/saved.html',
-  '/pages/participants.html',
+  './nav.html',
+  './team.html',
+  './index.html',
+  './pages/home.html',
+  './pages/saved.html',
+  './pages/participants.html',
 
   // Javascripts
-  '/push.js',
-  '/js/db.js',
-  '/js/nav.js',
-  '/js/api.js',
-  '/js/idb.js',
-  'js/main.js',
-  '/js/materialize.min.js',
+  './push.js',
+  './js/db.js',
+  './js/nav.js',
+  './js/api.js',
+  './js/idb.js',
+  './js/main.js',
+  './js/materialize.min.js',
 
   // CSS
-  '/css/style.css',
-  '/css/materialize.min.css',
+  './css/style.css',
+  './css/materialize.min.css',
 
   // AOS
   'https://unpkg.com/aos@next/dist/aos.js',
   'https://unpkg.com/aos@next/dist/aos.css',
 
   //Manifest
-  '/manifest.json',
+  './manifest.json',
 
   // Assets
   './iconsplash_512.png',
