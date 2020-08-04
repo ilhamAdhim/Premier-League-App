@@ -1,4 +1,4 @@
-let pathImagesTopScorer = ["../assets/first-top-scorer.png", "../assets/second-top-scorer.png", "../assets/third-top-scorer.png"]
+let pathImagesTopScorer = ["./assets/first-top-scorer.png", "./assets/second-top-scorer.png", "./assets/third-top-scorer.png"]
 
 let renderStandings = () => {
     showLoader();
@@ -123,7 +123,7 @@ let renderTeams = () => {
                             <div class="card team-card center-align" style="height:300px">
                                 <a href="./team.html?id=${club.team.id}" class="waves-effect waves-light">
                                 <div class="card-image" style="height:150px">
-                                    <img src="../assets/${club.team.name}-stadium.jpg" alt="${club.team.name}-stadium"
+                                    <img src="./assets/${club.team.name}-stadium.jpg" alt="${club.team.name}-stadium"
                                     height=150 style="z-index:-1">
                                 </div>
                                 <div class="card-content grey lighten-4" style="height:150px;z-index:0">
