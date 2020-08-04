@@ -172,7 +172,7 @@ let renderSavedTeams = (data) => {
         : teamHTML =
         `<div class="container" style = "height:80vh">
             <div class="center">
-                <img src="../assets/soccer-standing.png" width=128 alt="no-fav-team"> <br>
+                <img src="./assets/soccer-standing.png" width=128 alt="no-fav-team"> <br>
                 No favorite teams added
             </div>
         </div>`;
