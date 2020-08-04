@@ -2,7 +2,7 @@
   "name": "Pre-League App",
   "short_name": "Pre-League",
   "description": "All about Premiere League 2020",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#061951",
   "theme_color": "#061951",
