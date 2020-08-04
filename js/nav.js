@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     content.innerHTML = `
                     <div class="container" style="height:80vh"> 
                         <div class="center">
-                        <img src="../assets/soccer-standing.png" width=128 alt="offline logo"> <br>
+                        <img src="./assets/soccer-standing.png" width=128 alt="offline logo"> <br>
                             You are offline
                         </div>
                     </div>`;
