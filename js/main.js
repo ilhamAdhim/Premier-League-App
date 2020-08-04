@@ -177,13 +177,6 @@ let renderSavedTeams = (data) => {
             </div>
         </div>`;
 
-    // Responsive with js
-    /*  if (data.length <= 3) {
-         let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-         if (width > 1000) document.querySelector("#team-list").style.height = '75vh';
-         else document.querySelector("#team-list").style.height = '100%';
-     };*/
-
     let width;
     if (data.length > 3) {
         let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
