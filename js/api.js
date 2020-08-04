@@ -1,12 +1,12 @@
 const API_KEY = '47e21f74b233433f9424263bcf49c5b7';
 const league_id = 2021;
 
-var base_url = "https://api.football-data.org/v2/";
-var standingsURL = `${base_url}competitions/${league_id}/standings`
-var topScorersURL = `${base_url}competitions/PL/scorers?limit=3`
+let base_url = "https://api.football-data.org/v2/";
+let standingsURL = `${base_url}competitions/${league_id}/standings`
+let topScorersURL = `${base_url}competitions/PL/scorers?limit=3`
 
 // All request in one function with dynamic url
-let fetchApi = url => {
+const fetchApi = url => {
   let responseAPI = fetch(url, {
     headers: {
       'X-Auth-Token': API_KEY
@@ -17,13 +17,13 @@ let fetchApi = url => {
   return responseAPI;
 }
 
-let cacheAPI = url => caches.match(url).then(response => {
+const cacheAPI = url => caches.match(url).then(response => {
   let responseCache = response === undefined ? 'Caching' : response.json();
   return responseCache;
 });
 
 // Blok kode yang akan di panggil jika fetch berhasil
-let status = response => {
+const status = response => {
   if (response.status !== 200) {
     console.log("Error : " + response.status);
     // Method reject() akan membuat blok catch terpanggil
@@ -47,24 +47,24 @@ let json = response => {
 }
 
 // Blok kode untuk meng-handle kesalahan di blok catch
-let error = error => {
+const error = error => {
   // Parameter error berasal dari Promise.reject()
   console.log("Error : " + error);
 }
 
-let getStandings = () => {
+const getStandings = () => {
   return fetchApi(standingsURL).catch(() => {
     return cacheAPI(standingsURL);
   });
 }
 
-let getTopScorers = () => {
+const getTopScorers = () => {
   return fetchApi(topScorersURL).catch(() => {
     return cacheAPI(topScorersURL);
   });
 }
 
-let getTeamById = () => {
+const getTeamById = () => {
   return new Promise(function (resolve, reject) {
     // Ambil nilai query parameter (?id=)
     let urlParams = new URLSearchParams(window.location.search);
@@ -77,7 +77,7 @@ let getTeamById = () => {
   });
 }
 
-let getMatchesByTeam = () => {
+const getMatchesByTeam = () => {
   let urlParams = new URLSearchParams(window.location.search);
   let idParam = urlParams.get("id");
 
@@ -87,11 +87,11 @@ let getMatchesByTeam = () => {
 }
 
 
-let getFavTeams = () => getAll();
+const getFavTeams = () => getAll();
 
 function getSavedTeamById() {
-  var urlParams = new URLSearchParams(window.location.search);
-  var idParam = urlParams.get("id");
+  let urlParams = new URLSearchParams(window.location.search);
+  let idParam = urlParams.get("id");
 
   getById(idParam).then((team) => {
     clubHTML = `
@@ -119,8 +119,8 @@ function getById(id) {
   return new Promise(function (resolve, reject) {
     dbPromised
       .then(function (db) {
-        var tx = db.transaction("teams", "readonly");
-        var store = tx.objectStore("teams");
+        let tx = db.transaction("teams", "readonly");
+        let store = tx.objectStore("teams");
         return store.get(id);
       })
       .then(function (team) {
@@ -130,7 +130,7 @@ function getById(id) {
 }
 
 
-let showLoader = () => {
+const showLoader = () => {
   let html =
     `
     <div class="container" style="height:80vh"> 
@@ -151,6 +151,6 @@ let showLoader = () => {
   document.getElementById("loader").innerHTML = html;
 }
 
-let hideLoader = () => {
+const hideLoader = () => {
   document.getElementById("loader").innerHTML = '';
 }
