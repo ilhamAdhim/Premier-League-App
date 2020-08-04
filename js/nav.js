@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function loadNav() {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
-            if (this.readyState == 4) {
-                if (this.status != 200) return;
+            if (this.readyState === 4) {
+                if (this.status !== 200) return;
 
                 // Muat daftar tautan menu
                 document.querySelectorAll(".topnav, .sidenav").forEach(function (elm) {
@@ -37,13 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Load page content
     var page = window.location.hash.substr(1);
-    if (page == "") page = "home";
+    if (page === "") page = "home";
     loadPage(page);
 
     function loadPage(page) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
-            if (this.readyState == 4) {
+            if (this.readyState === 4) {
                 var content = document.querySelector("#body-content");
                 if (page === "home") {
                     renderTopScorers();
@@ -51,9 +51,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else if (page === "saved" || page === "participants") {
                     renderTeams();
                 }
-                if (this.status == 200) {
+                if (this.status === 200) {
                     content.innerHTML = xhttp.responseText;
-                } else if (this.status == 404) {
+                } else if (this.status === 404) {
                     content.innerHTML = `
                     <div class="container" style="height:80vh"> 
                         <div class="center"> 
