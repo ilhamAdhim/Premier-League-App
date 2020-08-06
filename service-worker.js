@@ -64,7 +64,11 @@ workbox.precaching.precacheAndRoute([
   './assets/first-top-scorer.png',
   './assets/second-top-scorer.png',
   './assets/third-top-scorer.png'
-]);
+], {
+
+  ignoreUrlParametersMatching: [/.*/]
+
+});
 
 workbox.routing.registerRoute(
   new RegExp('/pages/'),
